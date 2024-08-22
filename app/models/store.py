@@ -7,12 +7,14 @@ class Store(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer, nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False,)
     name = db.Column(db.String(40), nullable=False, unique=True)
     description = db.Column(db.String(255))
     type = db.Column(db.String(40), nullable=False)
     store_img_url = db.Column(db.String(255))
     store_banner_url = db.Column(db.String(255))
+
+    owner = db.relationship('User', back_populates='stores')
 
     def to_dict(self):
         return {
@@ -21,5 +23,6 @@ class Store(db.Model):
             'name': self.name,
             'type': self.type,
             'store_img_url': self.store_img_url,
-            'store_banner_url': self.store_banner_url
+            'store_banner_url': self.store_banner_url,
+            'Owner': self.owner
         }
