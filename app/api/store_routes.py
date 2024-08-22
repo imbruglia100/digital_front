@@ -4,17 +4,18 @@ from flask_login import login_required, current_user
 from app.models import Store
 from app.models import db
 
-store_routes = Blueprint('stores', __name__, url_prefix='stores')
+store_routes = Blueprint('stores', __name__)
 
-
+# Get all stores
 @store_routes.route('/')
-def allStores():
+def all_stores():
     stores = Store.query.get.options(joinedload(Store.owner)).all()
     return jsonify({'stores': [store.to_dict() for store in stores]}), 200
 
+# create a store
 @store_routes.route('/', methods=["POST"])
 @login_required
-def createStore():
+def create_store():
     data = request.get_json()
     errors = {}
 
@@ -39,9 +40,10 @@ def createStore():
 
     return jsonify(new_store.to_dict()), 200
 
+# get all stores from current user
 @store_routes.route('/current')
 @login_required
-def getAllCurrentStores():
+def get_all_current_stores():
 
     if not current_user:
         return jsonify({"errors": {
@@ -51,9 +53,10 @@ def getAllCurrentStores():
     stores = Store.query.filter_by(owner_id=current_user.id).all()
     return jsonify({'stores': [store.to_dict() for store in stores]}), 200
 
+# get a specific store by storeId
 @store_routes.route('/<int:storeId>')
 @login_required
-def getSpecificStore(storeId):
+def get_specific_store(storeId):
     store = Store.query.get(storeId)
 
     if not store:
@@ -64,9 +67,10 @@ def getSpecificStore(storeId):
     store = Store.query.filter_by(owner_id=current_user.id).all()
     return jsonify(store.to_dict()), 200
 
+# update a store
 @store_routes.route('/<int:storeId>', methods=['PUT'])
 @login_required
-def getSpecificStore(storeId):
+def update_a_store(storeId):
     store = Store.query.get(storeId)
     data = request.get_json()
 
@@ -89,3 +93,18 @@ def getSpecificStore(storeId):
     db.session.commit()
 
     return jsonify(store.to_dict()), 201
+
+# delete a store
+@store_routes.route('/<int:storeId>')
+@login_required
+def delete_store(storeId):
+    store = Store.query.filter_by(id=storeId, owner_id=current_user.id).first()
+
+    if not store:
+        return jsonify({"errors": {
+            "Store": "Store does not exist"
+        }}), 404
+
+    db.session.delete(store)
+    db.session.commit()
+    return jsonify({"message": "Successfully deleted."}), 200
