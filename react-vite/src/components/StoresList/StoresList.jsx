@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getStores } from "../../redux/stores"
 import FilterSearchBar from "../FilterSearchBar"
 import StoreCard from "../StoreCard/StoreCard"
+import './StoresList.css'
+
 
 const StoresList = () => {
     const dispatch = useDispatch()
@@ -40,18 +42,20 @@ const StoresList = () => {
     return (
         <div id="stores-list-cont">
             <FilterSearchBar setSearch={setSearch} setFilter={setFilter} search={search} filter={filter}/>
-            {
-                !stores.isLoading  ?
-                    filteredStores.length > 0 ?
-                        filteredStores.map(store=> (
+            <div className="list-cards">
+                {
+                    !stores.isLoading  ?
+                        filteredStores.length > 0 ?
+                            filteredStores.map(store=> (
 
-                        store !== 'isLoading' ? <StoreCard store={store} /> : ''
-                        ))
+                            store !== 'isLoading' ? <StoreCard store={store} /> : ''
+                            ))
+                        :
+                        <p>No stores found</p>
                     :
-                    <p>No stores found</p>
-                :
-                <p>loading</p>
-            }
+                    <p>loading</p>
+                }
+            </div>
         </div>
     )
 }
