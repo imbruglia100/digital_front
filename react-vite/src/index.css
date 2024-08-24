@@ -1,7 +1,25 @@
+:root {
+  --primary-color: #385dff;
+  --on-click-btn: #2845c7;
+  --neutral-color: #abadad;
+  --border-radius: 100px;
+
+}
+
+
+
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
    ========================================================================== */
+
+   * {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
 
 /**
  * 1. Correct the line height in all browsers.
