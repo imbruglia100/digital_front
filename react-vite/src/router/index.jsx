@@ -3,6 +3,7 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import Home from '../components/Home/Home';
+import StoresList from '../components/StoresList/StoresList';
 
 export const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/stores",
-        element: <h1>Stores</h1>,
+        element: <StoresList />,
       },
       {
         path: "/products",

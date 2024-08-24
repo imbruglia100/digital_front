@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, jsonify, request
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
@@ -14,6 +14,7 @@ def authenticate():
     """
     if current_user.is_authenticated:
         return current_user.to_dict()
+    # return None
     return {'errors': {'message': 'Unauthorized'}}, 401
 
 
@@ -30,7 +31,7 @@ def login():
         # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
-        return user.to_dict()
+        return jsonify(user.to_dict())
     return form.errors, 401
 
 

@@ -25,6 +25,7 @@ export const getStores = () => async (dispatch) => {
         const data = await res.json();
         console.log('Stores:', data);
         if (data.errors) {
+            console.log("errors")
             return {...data.errors};
         }
 
@@ -98,10 +99,10 @@ export const deleteAStore = (storeId) => async (dispatch) =>{
         const data = await res.json()
 
         if(data.errors){
-            return;
+            return data.errors;
         }
 
-        dispatch(removeNotebook(data))
+        dispatch(removeStore(+storeId))
     }
 }
 

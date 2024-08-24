@@ -24,5 +24,5 @@ class Store(db.Model):
             'type': self.type,
             'store_img_url': self.store_img_url,
             'store_banner_url': self.store_banner_url,
-            'Owner': self.owner
+            'Owner': self.owner.to_dict()
         }

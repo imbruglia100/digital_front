@@ -7,9 +7,10 @@ from app.models import db
 store_routes = Blueprint('stores', __name__)
 
 # Get all stores
-@store_routes.route('/')
+@store_routes.route('')
 def all_stores():
-    stores = Store.query.get.options(joinedload(Store.owner)).all()
+    # stores = Store.query.filter_by(id=1).options(joinedload(Store.owner)).all()
+    stores = Store.query.options(joinedload(Store.owner)).all()
     return jsonify({'stores': [store.to_dict() for store in stores]}), 200
 
 # create a store

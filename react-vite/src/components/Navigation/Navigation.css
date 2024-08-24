@@ -6,23 +6,6 @@
   border-bottom: 1px solid var(--neutral-color);
 }
 
-.navlink {
-  text-decoration: none;
-  font-weight: 400;
-  color: var(--neutral-color);
-  margin: 0 15px;
-  transition: all 140ms ease-in-out;
-}
-
-.navlink.active {
-  color:var(--primary-color);
-  font-weight: 600;
-}
-
-.navlink:hover {
-  color: var(--primary-color);
-}
-
 #nav-menu {
   display: flex;
   align-items: center;
@@ -31,25 +14,4 @@
 
 #nav-menu > * {
   list-style: none;
-}
-
-.primary-btn {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 9px 16px;
-  border-radius: 100px;
-}
-
-.primary-btn:hover {
-  background-color: var(--on-click-btn);
-  color: white;
-  padding: 9px 16px;
-  border-radius: 100px;
-}
-
-.primary-btn.active {
-  background-color: var(--on-click-btn);
-  color: white;
-  padding: 9px 16px;
-  border-radius: 100px;
 }
