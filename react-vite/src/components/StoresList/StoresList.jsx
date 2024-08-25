@@ -1,63 +1,79 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from 'react-redux'
-import { getStores } from "../../redux/stores"
-import FilterSearchBar from "../FilterSearchBar"
-import StoreCard from "../StoreCard/StoreCard"
-import './StoresList.css'
+/** @format */
 
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getStores } from "../../redux/stores";
+import FilterSearchBar from "../FilterSearchBar";
+import StoreCard from "../StoreCard/StoreCard";
+import "./StoresList.css";
+import { NavLink } from "react-router-dom";
 
-const StoresList = () => {
-    const dispatch = useDispatch()
-    const stores = useSelector(state=>state.stores.allStores)
-    const [search, setSearch] = useState('')
-    const [filter, setFilter] = useState({})
-    const [filteredStores, setFilteredStores] = useState(stores ? Object.values(stores) : [])
+const StoresList = ({ userStore }) => {
+  const stores = useSelector((state) => state.stores.allStores);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState({});
+  const [filteredStores, setFilteredStores] = useState(
+    stores ? Object.values(stores) : []
+  );
 
-    useEffect(() => {
-        dispatch(getStores(), "DISPATCH ++++++++++++")
-        setFilteredStores(Object.values(stores))
-    }, [dispatch])
+  useEffect(() => {
+    setFilteredStores(Object.values(stores));
+  }, [stores]);
 
-    useEffect(() => {
-        setFilteredStores(Object.values(stores))
-    }, [stores])
+  useEffect(() => {
+    if (!stores.isLoading) {
+      console.log(search, filteredStores);
+      setFilteredStores(
+        Object.values(stores).filter((val) =>
+          val.name.toLowerCase().startsWith(search.toLowerCase())
+        )
+      );
+    }
+  }, [search]);
 
-    useEffect(() => {
-        if (!stores.isLoading){
-            console.log(search, filteredStores)
-            setFilteredStores(
-                Object.values(stores).filter(val => val.name.toLowerCase().startsWith(search.toLowerCase()))
-            )
-        }
-    }, [search])
+  useEffect(() => {
+    if (search) {
+    }
+  }, [filter]);
 
-    useEffect(() => {
-        if(search){
-
-        }
-    }, [filter])
-
-
-
+  const CreateACard = () => {
     return (
-        <div id="stores-list-cont">
-            <FilterSearchBar setSearch={setSearch} setFilter={setFilter} search={search} filter={filter}/>
-            <div className="list-cards">
-                {
-                    !stores.isLoading  ?
-                        filteredStores.length > 0 ?
-                            filteredStores.map(store=> (
+        <NavLink style={{display:'flex', alignItems:'center', justifyContent:'center', textDecoration:'none'}} className='store-card-container' to={'/stores/create'}>
+            <h1 style={{color:'#385dff'}}>Create a Store</h1>
+        </NavLink>
+        );
+  };
 
-                            store !== 'isLoading' ? <StoreCard store={store} /> : ''
-                            ))
-                        :
-                        <p>No stores found</p>
-                    :
-                    <p>loading</p>
-                }
-            </div>
-        </div>
-    )
-}
+  return (
+    <div id='stores-list-cont'>
+      <FilterSearchBar
+        setSearch={setSearch}
+        setFilter={setFilter}
+        search={search}
+        filter={filter}
+      />
+      <div className='list-cards'>
+        {!stores.isLoading ? (
+          filteredStores.length > 0 ? (
+            <>
+              {filteredStores.map((store, key) =>
+                store !== "isLoading" ? (
+                  <StoreCard key={key} store={store} />
+                ) : (
+                  ""
+                )
+              )}
+                <CreateACard />
+            </>
+          ) : (
+            <p>No stores found</p>
+          )
+        ) : (
+          <p>loading</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
-export default StoresList
+export default StoresList;

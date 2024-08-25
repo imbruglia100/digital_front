@@ -3,7 +3,8 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import Home from '../components/Home/Home';
-import StoresList from '../components/StoresList/StoresList';
+import UserStoreList from '../components/UserStoresList';
+import AllStoresList from '../components/AllStoresList/AllStoresList';
 
 export const router = createBrowserRouter([
   {
@@ -15,11 +16,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/stores",
-        element: <StoresList />,
+        element: <AllStoresList />,
       },
       {
         path: "/stores/current",
-        element: <h1>Specific users stores</h1>,
+        element: <UserStoreList />,
+      },
+      {
+        path: "/stores/create",
+        element: <UserStoreList />,
       },
       {
         path: "/stores/:storeId",

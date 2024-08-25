@@ -33,6 +33,21 @@ export const getStores = () => async (dispatch) => {
     }
 };
 
+export const getUserStores = () => async (dispatch) => {
+    const res = await fetch("/api/stores/current");
+
+    if (res.ok) {
+        const data = await res.json();
+        console.log('Stores:', data);
+        if (data.errors) {
+            console.log("errors")
+            return {...data.errors};
+        }
+
+        dispatch(setStores({...data.stores}));
+    }
+};
+
 export const getSelectedStore = (id) => async (dispatch) => {
     const res = await fetch(`/api/stores/${id}`);
 
