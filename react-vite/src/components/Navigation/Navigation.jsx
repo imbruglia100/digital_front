@@ -3,8 +3,21 @@
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
+import { useDispatch, useSelector } from "react-redux";
+import Cart from "../Cart";
+import DropdownMenu from "../DropDownMenu/DropDownMenu";
+import { FaUserCircle } from "react-icons/fa";
+import { thunkLogout } from "../../redux/session";
 
 function Navigation() {
+  const dispatch = useDispatch();
+
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(thunkLogout());
+  };
+
+  const user = useSelector(state=>state.session.user)
   return (
     <nav id='nav-bar'>
       <ul id='nav-menu'>
@@ -67,15 +80,55 @@ function Navigation() {
       </ul>
 
       <div id='account-actions'>
-        <NavLink to='/login' className='navlink'>
-          Sign in
-        </NavLink>
+        {
+          !user ?
+            <>
+              <NavLink to='/login' className='navlink'>
+                Sign in
+              </NavLink>
 
-        <NavLink to='/signup' className='navlink primary-btn'>
-          Sign Up
-        </NavLink>
+              <NavLink to='/signup' className='navlink primary-btn'>
+                Sign Up
+              </NavLink>
+            </>
+          :
+          <div style={{display:'flex', alignItems:'center'}}>
+            <Cart className='navlink' />
+            <DropdownMenu items={[
+                user.username,
+                user.email,
+                <NavLink
+            className={({ isActive }) =>
+              isActive ? "active navlink" : "navlink"
+            }
+            to='/stores/current'
+          >
+            My Stores
+          </NavLink>,
+          <NavLink
+          className={({ isActive }) =>
+            isActive ? "active navlink" : "navlink"
+          }
+          to='/products/current'
+        >
+          My Products
+        </NavLink>,
+        <NavLink
+        className={({ isActive }) =>
+          isActive ? "active navlink" : "navlink"
+        }
+        to='/user/current'
+      >
+        Profile
+      </NavLink>,
+                <button className="navlink primary-btn" style={{border:'none'}} onClick={logout}>Log Out</button>
+              ]}
+              icon={<FaUserCircle />} />
+            {/* <ProfileButton className='navlink profile-btn' /> */}
+          </div>
+        }
 
-        {/* <ProfileButton /> */}
+
       </div>
     </nav>
   );

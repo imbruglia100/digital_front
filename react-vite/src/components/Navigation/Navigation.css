@@ -15,3 +15,14 @@
 #nav-menu > * {
   list-style: none;
 }
+
+#account-actions .dropdown-icon{
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  border: none;
+  font-size: 25px;
+  margin: auto;
+  color: var(--primary-color);
+  cursor: pointer;
+}

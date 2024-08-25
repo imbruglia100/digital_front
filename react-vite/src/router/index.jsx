@@ -18,8 +18,32 @@ export const router = createBrowserRouter([
         element: <StoresList />,
       },
       {
+        path: "/stores/current",
+        element: <h1>Specific users stores</h1>,
+      },
+      {
+        path: "/stores/:storeId",
+        element: <h1>Specific store</h1>,
+      },
+      {
         path: "/products",
         element: <h1>Products</h1>,
+      },
+      {
+        path: "/products/current",
+        element: <h1>current users products</h1>,
+      },
+      {
+        path: "/products/:productId",
+        element: <h1>current users products</h1>,
+      },
+      {
+        path: '/user/current',
+        element: <h1>Current users profile</h1>
+      },
+      {
+        path: '/user/:userId',
+        element: <h1>Specific users profile</h1>
       },
       {
         path: "/about",

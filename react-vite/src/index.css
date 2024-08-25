@@ -33,6 +33,7 @@
   color: var(--neutral-color);
   margin: 0 15px;
   transition: all 140ms ease-in-out;
+  cursor: pointer;
 }
 
 .navlink.active {
