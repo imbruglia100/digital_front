@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
-import { thunkSignup } from "../../redux/session";
+import { thunkLogin, thunkSignup } from "../../redux/session";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -40,52 +40,80 @@ function SignupFormPage() {
     }
   };
 
+  const handleDemoUser = async () => {
+    const serverResponse = await dispatch(
+      thunkLogin({
+        email: 'demo@aa.io',
+        password: 'password',
+      })
+    );
+
+    if (serverResponse) {
+      setErrors(serverResponse);
+    } else {
+      navigate("/");
+    }
+  }
+
   return (
     <>
-      <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
       <form onSubmit={handleSubmit}>
+      <h1>Sign Up</h1>
+      <div className="form-item">
         <label>
           Email
+          </label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
         {errors.email && <p>{errors.email}</p>}
+
+      </div>
+      <div className="form-item">
         <label>
           Username
+          </label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
         {errors.username && <p>{errors.username}</p>}
+
+      </div>
+      <div className="form-item">
         <label>
           Password
+          </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
         {errors.password && <p>{errors.password}</p>}
+
+      </div>
+      <div className="form-item">
         <label>
           Confirm Password
+          </label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+
+      </div>
+        <button className="primary-btn" type="submit">Sign Up</button>
+        <button className="navlink" style={{border:'none', backgroundColor:'transparent'}} onClick={handleDemoUser}>Log in as Demo User</button>
       </form>
     </>
   );

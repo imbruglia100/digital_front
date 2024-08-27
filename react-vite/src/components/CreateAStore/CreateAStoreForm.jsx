@@ -49,12 +49,12 @@ const CreateAStoreForm = () => {
 
                 <div className='form-item'>
                     <label>Profile Image</label>
-                    <input value={newStore.store_img_url} onChange={(e) => setNewStore(prev=> ({...prev, store_img_url: e.target.value}))} type='file' />
+                    <input value={newStore.store_img_url} onChange={(e) => setNewStore(prev=> ({...prev, store_img_url: e.target.value}))} type='text' />
                 </div>
 
                 <div className='form-item'>
                     <label>Banner Image</label>
-                    <input value={newStore.store_banner_url} onChange={(e) => setNewStore(prev=> ({...prev, store_banner_url: e.target.value}))} type='file' />
+                    <input value={newStore.store_banner_url} onChange={(e) => setNewStore(prev=> ({...prev, store_banner_url: e.target.value}))} type='text' />
                 </div>
                 <button className='primary-btn' type='submit'>Submit</button>
             </form> :

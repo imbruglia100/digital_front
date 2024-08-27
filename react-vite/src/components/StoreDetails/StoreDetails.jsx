@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { clearSelected, getSelectedStore } from "../../redux/stores";
 import "./StoreDetails.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,23 +14,29 @@ const LoadingImg = () => {
   return "";
 };
 
-const StoreDetails = () => {
+const StoreDetails = ({edit}) => {
   const { storeId } = useParams();
   const store = useSelector((state) => state.stores.selectedStore);
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
-
+  // const navigate = useNavigate()
   useEffect(() => {
     dispatch(clearSelected())
     dispatch(getSelectedStore(+storeId));
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   if(edit && user?.id !== store?.owner_id){
+  //     navigate(`/stores/${storeId}`)
+  //   }
+  // }, [store, user])
 
   return (
     <div id='store-details-container'>
       <div className='store-img-container'>
         <div id='selected-store-banner' className='banner-container'>
           <img className='banner' src={store.store_banner_url} />
-          {user?.id === store.owner_id && (
+          {user && user?.id === store.owner_id && (
             <div id='user-action-buttons'>
               <NavLink to={"edit"} className='primary-btn edit-btn'>
                 Edit

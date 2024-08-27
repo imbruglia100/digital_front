@@ -30,6 +30,7 @@ def create_store():
         owner_id=data.get('owner_id'),
         name=data["name"],
         type= data["type"],
+        description=data["description"],
         store_img_url= data['store_img_url'],
         store_banner_url= data['store_banner_url'],
     )
@@ -54,7 +55,6 @@ def get_all_current_stores():
 
 # get a specific store by storeId
 @store_routes.route('/<int:storeId>')
-@login_required
 def get_specific_store(storeId):
     store = Store.query.filter_by(id=storeId).first()
 
@@ -67,26 +67,25 @@ def get_specific_store(storeId):
 
 # update a store
 @store_routes.route('/<int:storeId>', methods=['PUT'])
-@login_required
 def update_a_store(storeId):
     store = Store.query.get(storeId)
     data = request.get_json()
 
     if not store:
         return jsonify({"errors": {
-            "Store": "Store does not exist"
+            "store": "Store does not exist"
         }}), 404
 
-    if not store["owner_id"] == current_user.id:
+    if not store.to_dict()["owner_id"] == current_user.id:
         return jsonify({"errors": {
-            "Store": "You dont own this store"
+            "store": "You dont own this store"
         }}), 304
 
     store.name = data.get('name', store.name)
     store.type = data.get('type', store.type)
     store.description = data.get('description', store.description)
-    store.store_img_url= data.get('store_img_url', store.store_img_url)
-    store.store_banner_url= data.get('store_banner_url', store.store_banner_url)
+    store.store_img_url = data.get('store_img_url', store.store_img_url)
+    store.store_banner_url = data.get('store_banner_url', store.store_banner_url)
 
     db.session.commit()
 

@@ -31,33 +31,56 @@ function LoginFormPage() {
     }
   };
 
+  const handleDemoUser = async () => {
+    const serverResponse = await dispatch(
+      thunkLogin({
+        email: 'demo@aa.io',
+        password: 'password',
+      })
+    );
+
+    if (serverResponse) {
+      setErrors(serverResponse);
+    } else {
+      navigate("/");
+    }
+  }
+
   return (
     <>
-      <h1>Log In</h1>
       {errors.length > 0 &&
         errors.map((message) => <p key={message}>{message}</p>)}
       <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
+        <h1>Log In</h1>
+        <div className="form-item">
+          <label>
+            Email
+            </label>
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          {errors.email && <p>{errors.email}</p>}
+
+        </div>
+
+        <div className="form-item">
         <label>
           Password
+          </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
         {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
+
+        </div>
+        <button className="primary-btn" type="submit">Log In</button>
+        <button className="navlink" style={{border:'none', backgroundColor:'transparent'}} onClick={handleDemoUser}>Log in as Demo User</button>
       </form>
     </>
   );

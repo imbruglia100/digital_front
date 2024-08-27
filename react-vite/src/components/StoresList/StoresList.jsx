@@ -23,8 +23,11 @@ const StoresList = ({ userStore }) => {
     if (!stores.isLoading) {
       console.log(search, filteredStores);
       setFilteredStores(
-        Object.values(stores).filter((val) =>
-          val.name.toLowerCase().startsWith(search.toLowerCase())
+        Object.values(stores).filter((val) => {
+          if(search){
+            return val.name.toLowerCase().startsWith(search.toLowerCase())
+          }
+        }
         )
       );
     }

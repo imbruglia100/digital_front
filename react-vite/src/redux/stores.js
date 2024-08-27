@@ -95,7 +95,8 @@ export const addNewStore = (newStore) => async (dispatch) =>{
 }
 
 export const editAStore = (store) => async (dispatch) =>{
-    const res = await fetch(`/api/stores/${+store.id}`, {
+    console.log(store)
+    const res = await fetch(`/api/stores/${+store?.id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
