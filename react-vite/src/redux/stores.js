@@ -1,6 +1,7 @@
 const SET_STORES = "stores/setStores"
 const SELECT_STORE = "stores/setSelectedStore"
 const ADD_STORE = "stores/addStore"
+const CLEAR_SELECTED = "stores/clearSelected"
 const REMOVE_STORE = "stores/removeStore"
 
 const setStores = (payload) => ({
@@ -11,6 +12,15 @@ const setStores = (payload) => ({
 const addStore = (payload) => ({
     type: ADD_STORE,
     payload //store
+})
+
+const selectStore = (payload) => ({
+    type: SELECT_STORE,
+    payload //store
+})
+
+export const clearSelected = () => ({
+    type: CLEAR_SELECTED
 })
 
 const removeStore = (payload) => ({
@@ -57,7 +67,7 @@ export const getSelectedStore = (id) => async (dispatch) => {
             return {...data.errors};
         }
 
-        dispatch(setStores({...data}));
+        dispatch(selectStore({...data}));
     }
 };
 
@@ -78,7 +88,10 @@ export const addNewStore = (newStore) => async (dispatch) =>{
         }
 
         dispatch(addStore(data))
+        return data
     }
+
+
 }
 
 export const editAStore = (store) => async (dispatch) =>{
@@ -98,25 +111,18 @@ export const editAStore = (store) => async (dispatch) =>{
         }
 
         dispatch(addStore(data))
+        return data
     }
+
+
 }
 
 export const deleteAStore = (storeId) => async (dispatch) =>{
-    const res = await fetch(`/api/notebooks/${+storeId}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({id: +storeId})
+    const res = await fetch(`/api/stores/${+storeId}`, {
+        method: "DELETE"
     })
 
     if(res.ok){
-        const data = await res.json()
-
-        if(data.errors){
-            return data.errors;
-        }
-
         dispatch(removeStore(+storeId))
     }
 }
@@ -131,6 +137,8 @@ function storesReducer(state = initialState, action) {
         return { ...state, allStores: {...state.allStores, [action.payload.id]: action.payload, isLoading: false} };
       case SELECT_STORE:
             return { ...state, selectedStore: {...action.payload, isLoading: false} };
+      case CLEAR_SELECTED:
+            return {...state, selectedStore: {} }
       case REMOVE_STORE:
         delete state.allStores[action.payload]
         return state;

@@ -15,21 +15,19 @@ def all_stores():
 
 # create a store
 @store_routes.route('/', methods=["POST"])
-@login_required
 def create_store():
     data = request.get_json()
     errors = {}
 
-    if not data["owner_id"]:
-        errors["Name"] = 'Name is required'
+    if not data["name"]:
+        errors["name"] = 'Name is required'
     if not data["type"]:
-        errors["Type"] = 'Type is required'
+        errors["type"] = 'Type is required'
 
     if errors:
         return jsonify(errors), 404
-
     new_store = Store(
-        owner_id= current_user.id,
+        owner_id=data.get('owner_id'),
         name=data["name"],
         type= data["type"],
         store_img_url= data['store_img_url'],
@@ -58,14 +56,13 @@ def get_all_current_stores():
 @store_routes.route('/<int:storeId>')
 @login_required
 def get_specific_store(storeId):
-    store = Store.query.get(storeId)
+    store = Store.query.filter_by(id=storeId).first()
 
     if not store:
         return jsonify({"errors": {
             "Store": "Store does not exist"
         }}), 404
 
-    store = Store.query.filter_by(owner_id=current_user.id).all()
     return jsonify(store.to_dict()), 200
 
 # update a store
@@ -96,8 +93,7 @@ def update_a_store(storeId):
     return jsonify(store.to_dict()), 201
 
 # delete a store
-@store_routes.route('/<int:storeId>')
-@login_required
+@store_routes.route('/<int:storeId>', methods=['DELETE'])
 def delete_store(storeId):
     store = Store.query.filter_by(id=storeId, owner_id=current_user.id).first()
 

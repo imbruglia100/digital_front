@@ -6,4 +6,5 @@
 .list-cards {
     display: flex;
     margin: 25px 0;
+    flex-wrap: wrap;
 }
