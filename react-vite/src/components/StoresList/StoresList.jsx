@@ -16,25 +16,22 @@ const StoresList = ({ userStore }) => {
   );
 
   useEffect(() => {
-    setFilteredStores(Object.values(stores));
-  }, [stores]);
-
-  useEffect(() => {
     if (!stores.isLoading) {
-      console.log(search, filteredStores);
       setFilteredStores(
         Object.values(stores).filter((val) => {
           if(search){
             return val.name.toLowerCase().startsWith(search.toLowerCase())
+          }else{
+            return Object.values(stores)
           }
         }
         )
       );
     }
-  }, [search]);
+  }, [stores, search]);
 
   useEffect(() => {
-    if (search) {
+    if (filter) {
     }
   }, [filter]);
 

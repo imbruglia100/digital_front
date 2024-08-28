@@ -9,19 +9,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteStoreModal from "./DeleteStoreModal";
+import { LoadingImage } from "../LoadingItems/LoadingImage";
 
-const LoadingImg = () => {
-  return "";
-};
-
-const StoreDetails = ({edit}) => {
+const StoreDetails = ({ edit }) => {
   const { storeId } = useParams();
   const store = useSelector((state) => state.stores.selectedStore);
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
   // const navigate = useNavigate()
   useEffect(() => {
-    dispatch(clearSelected())
+    dispatch(clearSelected());
     dispatch(getSelectedStore(+storeId));
   }, [dispatch]);
 
@@ -35,18 +32,24 @@ const StoreDetails = ({edit}) => {
     <div id='store-details-container'>
       <div className='store-img-container'>
         <div id='selected-store-banner' className='banner-container'>
-          <img className='banner' src={store.store_banner_url} />
-          {user && user?.id === store.owner_id && (
-            <div id='user-action-buttons'>
-              <NavLink to={"edit"} className='primary-btn edit-btn'>
-                Edit
-              </NavLink>
-              <OpenModalMenuItem
-                modalComponent={<DeleteStoreModal storeId={store.id} />}
-                itemText='Delete'
-                className='primary-btn delete-btn'
-              />
-            </div>
+          {!store.isLoading ? (
+            <>
+              <img className='banner' src={store.store_banner_url} />
+              {user && user?.id === store.owner_id && (
+                <div id='user-action-buttons'>
+                  <NavLink to={"edit"} className='primary-btn edit-btn'>
+                    Edit
+                  </NavLink>
+                  <OpenModalMenuItem
+                    modalComponent={<DeleteStoreModal storeId={store.id} />}
+                    itemText='Delete'
+                    className='primary-btn delete-btn'
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <LoadingImage />
           )}
         </div>
         <div className='store-picture-container'>
