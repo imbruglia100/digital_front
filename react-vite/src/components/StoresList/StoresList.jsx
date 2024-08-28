@@ -1,8 +1,7 @@
 /** @format */
 
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getStores } from "../../redux/stores";
+import { useSelector } from "react-redux";
 import FilterSearchBar from "../FilterSearchBar";
 import StoreCard from "../StoreCard/StoreCard";
 import "./StoresList.css";
@@ -17,26 +16,26 @@ const StoresList = ({ userStore }) => {
   );
 
   useEffect(() => {
-    setFilteredStores(Object.values(stores));
-  }, [stores]);
-
-  useEffect(() => {
     if (!stores.isLoading) {
-      console.log(search, filteredStores);
       setFilteredStores(
-        Object.values(stores).filter((val) =>
-          val.name.toLowerCase().startsWith(search.toLowerCase())
+        Object.values(stores).filter((val) => {
+          if(search){
+            return val.name.toLowerCase().startsWith(search.toLowerCase())
+          }else{
+            return Object.values(stores)
+          }
+        }
         )
       );
     }
-  }, [search]);
+  }, [stores, search]);
 
   useEffect(() => {
-    if (search) {
+    if (filter) {
     }
   }, [filter]);
 
-  const CreateACard = () => {
+  const CreateAStore = () => {
     return (
         <NavLink style={{display:'flex', alignItems:'center', justifyContent:'center', textDecoration:'none'}} className='store-card-container' to={'/stores/create'}>
             <h1 style={{color:'#385dff'}}>Create a Store</h1>
@@ -58,12 +57,12 @@ const StoresList = ({ userStore }) => {
             <>
               {filteredStores.map((store, key) =>
                 store !== "isLoading" ? (
-                  <StoreCard key={key} store={store} />
+                  <StoreCard key={key} userStore store={store} />
                 ) : (
                   ""
                 )
               )}
-                <CreateACard />
+                {userStore && <CreateAStore />}
             </>
           ) : (
             <p>No stores found</p>

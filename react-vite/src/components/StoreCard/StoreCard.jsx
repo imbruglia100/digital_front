@@ -1,23 +1,41 @@
-import './StoreCard.css'
-const StoreCard = ({store}) => {
+/** @format */
 
-    return (
-        <div className="store-card-container">
-            <div className="store-img-container">
-                <div className='banner-container'>
-                    <img className="banner" src={store.store_banner_url} />
-                </div>
-                <div className='store-picture-container'>
-                    <img className="store-picture" src={store.store_img_url} />
-                </div>
-            </div>
-
-            <div className='store-info'>
-                {store.name}
-                {store.type}
-            </div>
+import { NavLink } from "react-router-dom";
+import "./StoreCard.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+const StoreCard = ({ store, userStore }) => {
+  return (
+    <NavLink
+      to={userStore ? `/stores/${store.id}` : `${store.id}`}
+      className='store-card-container'
+    >
+      <div className='store-img-container'>
+        <div className='banner-container'>
+          <img className='banner' src={store.store_banner_url} />
         </div>
-    )
-}
+        <div className='store-picture-container'>
+          <img className='store-picture' src={store.store_img_url} />
+        </div>
+      </div>
 
-export default StoreCard
+      <div className='store-info'>
+        <div className='first-half-store-info'>
+          <h2>{store.name}</h2>
+          <a
+            style={{ color: "#A57C00", textDecoration: "none" }}
+            href='#reviews'
+          >
+            5.0 <FontAwesomeIcon icon={faStar} />
+          </a>
+        </div>
+        <div className='second-half-store-info'>
+          <p className="store-type">{store.type}</p>
+          <p>35 Reviews</p>
+        </div>
+      </div>
+    </NavLink>
+  );
+};
+
+export default StoreCard;

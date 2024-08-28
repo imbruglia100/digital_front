@@ -22,6 +22,7 @@ class Store(db.Model):
             'owner_id': self.owner_id,
             'name': self.name,
             'type': self.type,
+            'description': self.description,
             'store_img_url': self.store_img_url,
             'store_banner_url': self.store_banner_url,
             'Owner': self.owner.to_dict()

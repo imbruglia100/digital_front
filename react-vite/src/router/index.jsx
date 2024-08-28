@@ -5,6 +5,9 @@ import Layout from './Layout';
 import Home from '../components/Home/Home';
 import UserStoreList from '../components/UserStoresList';
 import AllStoresList from '../components/AllStoresList/AllStoresList';
+import StoreDetails from '../components/StoreDetails';
+import CreateAStoreForm from '../components/CreateAStore';
+import EditAStore from '../components/EditAStore';
 
 export const router = createBrowserRouter([
   {
@@ -24,11 +27,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/stores/create",
-        element: <UserStoreList />,
+        element: <CreateAStoreForm />,
       },
       {
         path: "/stores/:storeId",
-        element: <h1>Specific store</h1>,
+        element: <StoreDetails />,
+      },
+      {
+        path: "/stores/:storeId/edit",
+        element: <EditAStore />,
       },
       {
         path: "/products",
