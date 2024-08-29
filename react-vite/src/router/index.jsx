@@ -8,6 +8,7 @@ import AllStoresList from '../components/AllStoresList/AllStoresList';
 import StoreDetails from '../components/StoreDetails';
 import CreateAStoreForm from '../components/CreateAStore';
 import EditAStore from '../components/EditAStore';
+import AllProductsList from '../components/AllProductsList';
 
 export const router = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/products",
-        element: <h1>Products</h1>,
+        element: <AllProductsList />,
       },
       {
         path: "/products/current",

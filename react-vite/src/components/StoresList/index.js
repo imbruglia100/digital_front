@@ -1,3 +1,3 @@
-import Home from './StoresList';
+import StoresList from './StoresList';
 
-export default Home;
+export default StoresList;

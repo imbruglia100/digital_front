@@ -1,3 +1,3 @@
-import UserStoresList from './AllStoresList';
+import AllStoresList from './AllStoresList';
 
-export default UserStoresList;
+export default AllStoresList;

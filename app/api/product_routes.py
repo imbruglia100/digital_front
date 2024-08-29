@@ -4,12 +4,12 @@ from flask_login import login_required, current_user
 from app.models import Product
 from app.models import db
 
-product_routes = Blueprint('stores', __name__)
+product_routes = Blueprint('products', __name__)
 
 # Get all products
 @product_routes.route('')
 def all_stores():
-    products = Product.query.options(joinedload(Product.owner)).all()
+    products = Product.query.options(joinedload(Product.store)).all()
     return jsonify({'products': [product.to_dict() for product in products]}), 200
 
 # create a product
@@ -25,81 +25,86 @@ def create_prodcut():
 
     if errors:
         return jsonify(errors), 404
-    new_store = Product(
-        owner_id=data.get('owner_id'),
-        name=data["name"],
-        type= data["type"],
-        description=data["description"],
-        store_img_url= data['store_img_url'],
-        store_banner_url= data['store_banner_url'],
+    new_product = Product(
+        store_id=data.get('store_id'),
+        title=data["title"],
+        description= data["description"],
+        price=data["price"],
+        stock_amount= data['stock_amount'],
+        product_img= data['product_img'],
     )
 
-    db.session.add(new_store)
+    db.session.add(new_product)
     db.session.commit()
 
-    return jsonify(new_store.to_dict()), 200
+    return jsonify(new_product.to_dict()), 200
 
-# get all stores from current user
+# get all products from current user
 @product_routes.route('/current')
 @login_required
-def get_all_current_stores():
+def get_all_current_products():
 
     if not current_user:
         return jsonify({"errors": {
             "User": "Login is Required"
         }}), 404
 
-    stores = Product.query.filter_by(owner_id=current_user.id).all()
-    return jsonify({'stores': [store.to_dict() for store in stores]}), 200
+    products = Product.query.filter_by(owner_id=current_user.id).all()
+    return jsonify({'products': [product.to_dict() for product in products]}), 200
 
-# get a specific store by storeId
-@product_routes.route('/<int:storeId>')
-def get_specific_store(storeId):
-    store = Product.query.filter_by(id=storeId).first()
+# get a specific product by productId
+@product_routes.route('/<int:productId>')
+def get_specific_product(productId):
+    product = Product.query.filter_by(id=productId).first()
 
-    if not store:
+    if not product:
         return jsonify({"errors": {
-            "Store": "Store does not exist"
+            "product": "Product does not exist"
         }}), 404
 
-    return jsonify(store.to_dict()), 200
+    return jsonify(product.to_dict()), 200
 
-# update a store
-@product_routes.route('/<int:storeId>', methods=['PUT'])
-def update_a_store(storeId):
-    store = Product.query.get(storeId)
+# update a product
+@product_routes.route('/<int:productId>', methods=['PUT'])
+def update_a_product(productId):
+    product = Product.query.get(productId)
     data = request.get_json()
 
-    if not store:
+    if not product:
         return jsonify({"errors": {
-            "store": "Store does not exist"
+            "product": "Product does not exist"
         }}), 404
 
-    if not store.to_dict()["owner_id"] == current_user.id:
+    if not product.to_dict()["store"]['owner_id'] == current_user.id:
         return jsonify({"errors": {
-            "store": "You dont own this store"
+            "product": "You don't own this product"
         }}), 304
 
-    store.name = data.get('name', store.name)
-    store.type = data.get('type', store.type)
-    store.description = data.get('description', store.description)
-    store.store_img_url = data.get('store_img_url', store.store_img_url)
-    store.store_banner_url = data.get('store_banner_url', store.store_banner_url)
+    product.title = data.get('title', product.title)
+    product.description = data.get('description', product.description)
+    product.price = data.get('price', product.price)
+    product.stock_amount = data.get('stock_amount', product.stock_amount)
+    product.product_img = data.get('product_img', product.product_img)
 
     db.session.commit()
 
-    return jsonify(store.to_dict()), 201
+    return jsonify(product.to_dict()), 201
 
-# delete a store
-@product_routes.route('/<int:storeId>', methods=['DELETE'])
-def delete_store(storeId):
-    store = Product.query.filter_by(id=storeId, owner_id=current_user.id).first()
+# delete a product
+@product_routes.route('/<int:productId>', methods=['DELETE'])
+def delete_product(productId):
+    product = Product.query.filter_by(id=productId).first()
 
-    if not store:
+    if not product:
         return jsonify({"errors": {
-            "Store": "Store does not exist"
+            "product": "Product does not exist"
         }}), 404
 
-    db.session.delete(store)
+    if not product.store['owner_id'] == current_user.id:
+        return jsonify({"errors": {
+            "product": "You don't own the product"
+        }}), 404
+
+    db.session.delete(product)
     db.session.commit()
     return jsonify({"message": "Successfully deleted."}), 200
