@@ -47,8 +47,8 @@ export const router = createBrowserRouter([
         element: <h1>current users products</h1>,
       },
       {
-        path: "/products/:productId",
-        element: <h1>current users products</h1>,
+        path: "/stores/:storeId/products/:productId",
+        element: <h1>Specific product</h1>,
       },
       {
         path: '/user/current',

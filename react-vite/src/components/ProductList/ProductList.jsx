@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import FilterSearchBar from "../FilterSearchBar";
 import "./ProductList.css";
+import ProductCard from "../ProductCard";
 
 const ProductList = ({ userProduct }) => {
   const products = useSelector((state) => state.products.allProducts);
@@ -48,9 +49,7 @@ const ProductList = ({ userProduct }) => {
             <>
               {filteredProducts.map((product, key) =>
                 product !== 'isLoading' ? (
-                  <div>
-                    {product.title}
-                  </div>
+                  <ProductCard product={product} />
                 ) : (
                   ""
                 )
