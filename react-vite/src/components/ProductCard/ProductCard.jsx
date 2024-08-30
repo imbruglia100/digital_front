@@ -5,7 +5,7 @@ import "./ProductCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 const ProductCard = ({ product, userProduct }) => {
-  console.log(product)
+
   return (
     <NavLink
       to={userProduct ? `stores/${product.Store.id}/products/${product.id}` : `${product.id}`}
@@ -15,9 +15,10 @@ const ProductCard = ({ product, userProduct }) => {
         <div className='banner-container'>
           <img className='banner' src={product.product_img} />
         </div>
-        <div className='product-picture-container'>
-          <img className='product-picture' src={product.product_img_url} />
-        </div>
+        <NavLink to={`/stores/${product.Store.id}`} className='product-picture-container'>
+          <img className='store-thumbnail' src={product.Store.store_img_url} />
+        </NavLink>
+          <p className='store-thumbnail-text'>{product.Store.name}</p>
       </div>
 
       <div className='product-info'>
