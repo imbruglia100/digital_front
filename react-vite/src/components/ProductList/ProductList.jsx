@@ -19,13 +19,12 @@ const ProductList = ({ userProduct }) => {
     if (!products?.isLoading) {
       setFilteredProducts(
         Object.values(products).filter((val) => {
-          if(search){
-            return val.name.toLowerCase().startsWith(search.toLowerCase())
-          }else{
-            return Object.values(products)
+          if (search) {
+            return val.title.toLowerCase().startsWith(search.toLowerCase());
+          } else {
+            return Object.values(products);
           }
-        }
-        )
+        })
       );
     }
   }, [products, search]);
@@ -48,13 +47,13 @@ const ProductList = ({ userProduct }) => {
           filteredProducts.length > 0 ? (
             <>
               {filteredProducts.map((product, key) =>
-                product !== 'isLoading' ? (
-                  <ProductCard product={product} />
+                product !== "isLoading" ? (
+                  <ProductCard key={key} product={product} />
                 ) : (
                   ""
                 )
               )}
-                {userProduct && <CreateAStore />}
+              {userProduct && <CreateAProdcut />}
             </>
           ) : (
             <p>No Products found</p>
