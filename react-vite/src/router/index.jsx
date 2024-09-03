@@ -9,6 +9,7 @@ import StoreDetails from '../components/StoreDetails';
 import CreateAStoreForm from '../components/CreateAStore';
 import EditAStore from '../components/EditAStore';
 import AllProductsList from '../components/AllProductsList';
+import ProductDetials from '../components/ProductDetials';
 
 export const router = createBrowserRouter([
   {
@@ -47,8 +48,8 @@ export const router = createBrowserRouter([
         element: <h1>current users products</h1>,
       },
       {
-        path: "/stores/:storeId/products/:productId",
-        element: <h1>Specific product</h1>,
+        path: "products/:productId",
+        element: <ProductDetials />,
       },
       {
         path: '/user/current',

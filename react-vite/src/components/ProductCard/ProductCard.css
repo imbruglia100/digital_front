@@ -61,7 +61,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: start;
+    justify-content: space-between;
 }
 
 .product-amount {
@@ -90,94 +90,3 @@
     display: flex;
     flex-grow: 1;
 }
-
-/* .product-card-container {
-    width: 22%;
-    height: 250px;
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-    overflow: hidden;
-    border: 1px solid var(--neutral-color);
-    border-radius: 4px;
-    background-color: #eaf2ff;
-    transition: all 140ms ease-in-out;
-    text-decoration: none;
-    color: black;
-}
-
-.product-card-container:hover {
-    scale: 1.01;
-    background-color: #dfebff;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-}
-
-.product-img-container .banner-container {
-    width: 100%;
-    height: 150px;
-    position: relative;
-}
-
-.product-img-container .product-picture-container {
-    position: relative;
-}
-
-.product-img-container .banner-container .banner{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
-.product-img-container .product-picture-container .store-thumbnail{
-    width: 60px;
-    height: 60px;
-    position: absolute;
-    top:-45px;
-    left: 10px;
-    border-radius: 100px;
-    object-fit: cover;
-    object-position: center;
-    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-}
-
-.product-info {
-    display: flex;
-    height: 100%;
-    justify-content: space-between;
-    padding: 5px;
-}
-
-.product-info .first-half-product-info{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: start;
-}
-
-.store-thumbnail-text {
-    text-decoration: none;
-    color: var(--neutral-color);
-    margin-left: 5px;
-}
-.product-info .first-half-product-info *{
-    margin: 0;
-}
-
-.product-info .second-half-product-info{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: end;
-}
-
-.product-info .second-half-product-info *{
-    margin: 0;
-}
-
-.product-amount {
-    padding: 2px 3px;
-    border-radius: 100px;
-    font-size: 14px;
-    color: rgb(235, 81, 81);
-} */

@@ -132,9 +132,9 @@ function productsReducer(state = initialState, action) {
       case ADD_PRODUCT:
         return { ...state, allProducts: {...state.allProducts, [action.payload.id]: action.payload, isLoading: false} };
       case SELECT_PRODUCT:
-            return { ...state, selectProduct: {...action.payload, isLoading: false} };
+            return { ...state, selectedProduct: {...action.payload, isLoading: false} };
       case CLEAR_SELECTED:
-            return {...state, selectProduct: {} }
+            return {...state, selectedProduct: {} }
       case REMOVE_PRODUCT:
         delete state.allProducts[action.payload]
         return state;

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { clearSelected, getSelectedStore } from "../../redux/stores";
 import "./StoreDetails.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

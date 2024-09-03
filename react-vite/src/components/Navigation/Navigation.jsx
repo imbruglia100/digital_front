@@ -97,6 +97,7 @@ function Navigation() {
                 user.username,
                 user.email,
                 <NavLink
+                  key={0}
                   className={({ isActive }) =>
                     isActive ? "active navlink" : "navlink"
                   }
@@ -105,6 +106,7 @@ function Navigation() {
                   My Stores
                 </NavLink>,
                 <NavLink
+                  key={1}
                   className={({ isActive }) =>
                     isActive ? "active navlink" : "navlink"
                   }
@@ -113,6 +115,7 @@ function Navigation() {
                   My Products
                 </NavLink>,
                 <NavLink
+                  key={2}
                   className={({ isActive }) =>
                     isActive ? "active navlink" : "navlink"
                   }
@@ -121,6 +124,7 @@ function Navigation() {
                   Profile
                 </NavLink>,
                 <button
+                  key={3}
                   className='navlink primary-btn'
                   style={{ border: "none" }}
                   onClick={logout}
