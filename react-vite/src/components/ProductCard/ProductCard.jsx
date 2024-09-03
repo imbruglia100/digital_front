@@ -9,7 +9,7 @@ const ProductCard = ({ product, userProduct }) => {
     <NavLink
       to={
         userProduct
-          ? `stores/${product?.Store?.id}/products/${product?.id}`
+          ? `/products/${product?.id}`
           : `${product?.id}`
       }
       className='product-card-container'

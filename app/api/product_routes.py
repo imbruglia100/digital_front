@@ -1,8 +1,7 @@
 from flask import Blueprint, jsonify, request
 from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
-from app.models import Product
-from app.models import db
+from app.models import db, Product, Store
 
 product_routes = Blueprint('products', __name__)
 
@@ -49,7 +48,9 @@ def get_all_current_products():
             "User": "Login is Required"
         }}), 404
 
-    products = Product.query.filter_by(owner_id=current_user.id).all()
+    store_ids = [store.id for store in Store.query.filter_by(owner_id=current_user.id).all()]
+
+    products = Product.query.filter(Product.store_id.in_(store_ids)).all()
     return jsonify({'products': [product.to_dict() for product in products]}), 200
 
 # get a specific product by productId

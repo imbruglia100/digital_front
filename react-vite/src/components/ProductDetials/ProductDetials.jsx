@@ -34,11 +34,23 @@ const ProductDetials = ({ edit }) => {
           )}
       </div>
       <div className='product-detials-body'>
-        <h1>{product.title}</h1>
+        <div>
+          <h1>{product.title}</h1><span>{product.stock_amount} left</span>
+          <h2>${product.price}</h2>
+          <a style={{ color: "#A57C00", textDecoration: "none" }} href='#reviews'>
+            5.0 <FontAwesomeIcon icon={faStar} />
+          </a>
+        </div>
+        <div>
+          <h3>{product.description}</h3>
+          <select>
+            {[1,2,3,4,5,6,7,8,9,10].map(el => (
+              <option value={el}>{el}</option>
+            ))}
+          </select>
+          <button className="primary-btn" onClick={() => alert('Feature is under development.')}>Add to cart</button>
 
-        <a style={{ color: "#A57C00", textDecoration: "none" }} href='#reviews'>
-          5.0 <FontAwesomeIcon icon={faStar} />
-        </a>
+        </div>
       </div>
     </div>
   );

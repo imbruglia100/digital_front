@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import FilterSearchBar from "../FilterSearchBar";
 import "./ProductList.css";
 import ProductCard from "../ProductCard";
+import { NavLink } from "react-router-dom";
 
 const ProductList = ({ userProduct }) => {
   const products = useSelector((state) => state.products.allProducts);
@@ -36,19 +37,31 @@ const ProductList = ({ userProduct }) => {
 
   return (
     <div id='products-list-cont'>
-      <FilterSearchBar
-        setSearch={setSearch}
-        setFilter={setFilter}
-        search={search}
-        filter={filter}
-      />
+      <div className='product-actions'>
+        {userProduct ?
+        <NavLink className='navlink' to={"/products/create"}>
+          Create new Product
+        </NavLink>
+        :
+        <div></div>
+      }
+        <div>
+
+          <FilterSearchBar
+            setSearch={setSearch}
+            setFilter={setFilter}
+            search={search}
+            filter={filter}
+          />
+        </div>
+      </div>
       <div className='list-cards'>
         {!products?.isLoading ? (
           filteredProducts.length > 0 ? (
             <>
               {filteredProducts.map((product, key) =>
                 product !== "isLoading" ? (
-                  <ProductCard key={key} product={product} />
+                  <ProductCard key={key} product={product} userProduct />
                 ) : (
                   ""
                 )

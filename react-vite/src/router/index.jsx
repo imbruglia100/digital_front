@@ -10,6 +10,8 @@ import CreateAStoreForm from '../components/CreateAStore';
 import EditAStore from '../components/EditAStore';
 import AllProductsList from '../components/AllProductsList';
 import ProductDetials from '../components/ProductDetials';
+import UserProductsList from '../components/UserProductsList';
+import CreateAProductForm from '../components/CreateAProduct';
 
 export const router = createBrowserRouter([
   {
@@ -45,7 +47,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/products/current",
-        element: <h1>current users products</h1>,
+        element: <UserProductsList />,
+      },
+      {
+        path: "products/create",
+        element: <CreateAProductForm />,
       },
       {
         path: "products/:productId",
