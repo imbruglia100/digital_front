@@ -8,6 +8,11 @@ import AllStoresList from '../components/AllStoresList/AllStoresList';
 import StoreDetails from '../components/StoreDetails';
 import CreateAStoreForm from '../components/CreateAStore';
 import EditAStore from '../components/EditAStore';
+import AllProductsList from '../components/AllProductsList';
+import ProductDetials from '../components/ProductDetials';
+import UserProductsList from '../components/UserProductsList';
+import CreateAProductForm from '../components/CreateAProduct';
+import EditAProduct from '../components/EditAProduct';
 
 export const router = createBrowserRouter([
   {
@@ -39,15 +44,23 @@ export const router = createBrowserRouter([
       },
       {
         path: "/products",
-        element: <h1>Products</h1>,
+        element: <AllProductsList />,
       },
       {
         path: "/products/current",
-        element: <h1>current users products</h1>,
+        element: <UserProductsList />,
       },
       {
-        path: "/products/:productId",
-        element: <h1>current users products</h1>,
+        path: "products/create",
+        element: <CreateAProductForm />,
+      },
+      {
+        path: "products/:productId",
+        element: <ProductDetials />,
+      },
+      {
+        path: "products/:productId/edit",
+        element: <EditAProduct />,
       },
       {
         path: '/user/current',

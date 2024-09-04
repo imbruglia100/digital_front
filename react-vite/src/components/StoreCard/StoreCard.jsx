@@ -22,12 +22,12 @@ const StoreCard = ({ store, userStore }) => {
       <div className='store-info'>
         <div className='first-half-store-info'>
           <h2>{store.name}</h2>
-          <a
+          <p
             style={{ color: "#A57C00", textDecoration: "none" }}
             href='#reviews'
           >
             5.0 <FontAwesomeIcon icon={faStar} />
-          </a>
+          </p>
         </div>
         <div className='second-half-store-info'>
           <p className="store-type">{store.type}</p>

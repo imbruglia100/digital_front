@@ -32,6 +32,7 @@ const StoresList = ({ userStore }) => {
 
   useEffect(() => {
     if (filter) {
+      //filter with the selected filter options
     }
   }, [filter]);
 
