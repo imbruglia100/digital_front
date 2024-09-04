@@ -52,6 +52,18 @@ const ProductDetials = ({ edit }) => {
 
         </div>
       </div>
+      {user && user?.id === product?.Store?.owner_id && (
+                <div id='user-action-buttons'>
+                  <NavLink to={"edit"} className='primary-btn edit-btn'>
+                    Edit
+                  </NavLink>
+                  <OpenModalMenuItem
+                    modalComponent={<DeleteProductModal productId={product.id} />}
+                    itemText='Delete'
+                    className='primary-btn delete-btn'
+                  />
+                </div>
+              )}
     </div>
   );
 };

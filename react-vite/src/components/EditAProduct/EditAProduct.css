@@ -30,7 +30,7 @@ form h1 {
     margin: 5px 0;
 }
 
-.form-item input, select {
+.form-item input {
     padding: 5px;
 }
 
@@ -51,7 +51,7 @@ textarea::-webkit-scrollbar-track {
     border-radius: 10px;
   }
 
-.form-item input, textarea, select {
+.form-item input, textarea {
     border: 1px var(--neutral-color) solid;
     border-radius: 4px;
 }

@@ -93,7 +93,7 @@ export const addNewProduct = (newProduct) => async (dispatch) =>{
 }
 
 export const editAProduct = (product) => async (dispatch) =>{
-    const res = await fetch(`/api/stores/${+product?.id}`, {
+    const res = await fetch(`/api/products/${+product?.id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

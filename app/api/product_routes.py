@@ -69,6 +69,7 @@ def get_specific_product(productId):
 @product_routes.route('/<int:productId>', methods=['PUT'])
 def update_a_product(productId):
     product = Product.query.get(productId)
+    store = Store.query.get(product.store_id)
     data = request.get_json()
 
     if not product:
@@ -76,11 +77,11 @@ def update_a_product(productId):
             "product": "Product does not exist"
         }}), 404
 
-    if not product.to_dict()["store"]['owner_id'] == current_user.id:
+    if not store.owner_id == current_user.id:
         return jsonify({"errors": {
             "product": "You don't own this product"
         }}), 304
-
+    
     product.title = data.get('title', product.title)
     product.description = data.get('description', product.description)
     product.price = data.get('price', product.price)
@@ -95,13 +96,13 @@ def update_a_product(productId):
 @product_routes.route('/<int:productId>', methods=['DELETE'])
 def delete_product(productId):
     product = Product.query.filter_by(id=productId).first()
-
+    store = Store.query.filter_by(owner_id=current_user.id, id=product.store_id).first()
     if not product:
         return jsonify({"errors": {
             "product": "Product does not exist"
         }}), 404
 
-    if not product.store['owner_id'] == current_user.id:
+    if not store.owner_id == current_user.id:
         return jsonify({"errors": {
             "product": "You don't own the product"
         }}), 404

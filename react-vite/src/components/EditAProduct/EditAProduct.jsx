@@ -1,52 +1,58 @@
 /** @format */
 
 import { useDispatch, useSelector } from "react-redux";
-import "./CreateAProductForm.css";
+import "./EditAProduct.css";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { addNewProduct } from "../../redux/products";
+
+import { editAProduct } from "../../redux/products";
 import { getUserStores } from "../../redux/stores";
 
-const CreateAProductForm = () => {
+const EditAProduct = () => {
   const user = useSelector((state) => state.session.user);
+  const product = useSelector(state => state.products.selectedProduct)
   const userStores = useSelector(state=>state.stores.allStores)
+
   const dispatch = useDispatch();
-  const [newProduct, setNewProduct] = useState({
-    title: "",
-    description: "",
-    price: 0.0,
-    product_img: "",
-    store_id: '',
-    stock_amount: 0,
+  const [updatedProduct, setUpdatedProduct] = useState({
+    id: product.id,
+    store_id: product.store_id,
+    title: product.title || "",
+    description: product.description || "",
+    price: product.price || 0.0,
+    product_img: product.product_img || "",
+    stock_amount: product.stock_amount || 0,
   });
 
   const navigate = useNavigate()
 
-  useEffect(() => {
+  useEffect( () => {
+    setUpdatedProduct({...product})
+  }, [product])
+
+  useEffect(()=>{
     dispatch(getUserStores())
-  }, [])
+  },[dispatch])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const addedProduct = await dispatch(addNewProduct(newProduct));
+    const addedProduct = await dispatch(editAProduct(updatedProduct));
 
     if (!addedProduct?.errors) {
-        navigate(`/products/${addedProduct.id}`)
+        navigate(`/products/${product?.id}`)
     }
   };
 
   return user ? (
-    Object.values(userStores) ?
     <form action='POST' onSubmit={handleSubmit}>
-      <h1>Create Your Product</h1>
+      <h1>Update Your Product</h1>
 
       <div className='form-item'>
         <label>Title</label>
         <input
-          value={newProduct.title}
+          value={updatedProduct.title}
           onChange={(e) =>
-            setNewProduct((prev) => ({ ...prev, title: e.target.value }))
+            setUpdatedProduct((prev) => ({ ...prev, title: e.target.value }))
           }
           required
           type='text'
@@ -56,10 +62,10 @@ const CreateAProductForm = () => {
       <div className='form-item'>
         <label>Description</label>
         <textarea
-          value={newProduct.description}
+          value={updatedProduct.description}
           required
           onChange={(e) =>
-            setNewProduct((prev) => ({ ...prev, description: e.target.value }))
+            setUpdatedProduct((prev) => ({ ...prev, description: e.target.value }))
           }
         />
       </div>
@@ -67,14 +73,14 @@ const CreateAProductForm = () => {
       <div className='form-item'>
         <label>Price</label>
         <input
-          value={`$${newProduct.price}`}
+          value={`$${updatedProduct.price}`}
           onChange={(e) => {
             if (
               !e.target.value
                 .toLowerCase()
                 .includes("abcdefghijklmnopqrstuvwxyz".split(""))
             ) {
-              setNewProduct((prev) => ({
+              setUpdatedProduct((prev) => ({
                 ...prev,
                 price: e.target.value.split("$")[1] || "",
               }));
@@ -88,11 +94,11 @@ const CreateAProductForm = () => {
       <div className='form-item'>
         <label>Stock Amount</label>
         <input
-          value={newProduct.stock_amount}
+          value={updatedProduct.stock_amount}
           required
           onChange={(e) => {
             if (e.target.value >= 0) {
-              setNewProduct((prev) => ({
+              setUpdatedProduct((prev) => ({
                 ...prev,
                 stock_amount: e.target.value,
               }));
@@ -104,7 +110,7 @@ const CreateAProductForm = () => {
 
       <div className='form-item'>
         <label>Store</label>
-        <select required onChange={(e) => setNewProduct(prev=> {return {...prev, store_id:e.target.value}})}>
+        <select required onChange={(e) => setUpdatedProduct(prev=> {return {...prev, store_id:e.target.value}})}>
           {Object.values(userStores).map(el => {
             return <option value={el.id}>{el.name}</option>
           })}
@@ -114,9 +120,9 @@ const CreateAProductForm = () => {
       <div className='form-item'>
         <label>Product Image</label>
         <input
-          value={newProduct.product_img}
+          value={updatedProduct.product_img}
           onChange={(e) =>
-            setNewProduct((prev) => ({ ...prev, product_img: e.target.value }))
+            setUpdatedProduct((prev) => ({ ...prev, product_img: e.target.value }))
           }
           type='text'
         />
@@ -125,11 +131,9 @@ const CreateAProductForm = () => {
         Submit
       </button>
     </form>
-    :
-    <h1>Must create a store first!</h1>
   ) : (
     <Navigate to='/login' />
   );
 };
 
-export default CreateAProductForm;
+export default EditAProduct;

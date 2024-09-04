@@ -12,6 +12,7 @@ import AllProductsList from '../components/AllProductsList';
 import ProductDetials from '../components/ProductDetials';
 import UserProductsList from '../components/UserProductsList';
 import CreateAProductForm from '../components/CreateAProduct';
+import EditAProduct from '../components/EditAProduct';
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: "products/:productId",
         element: <ProductDetials />,
+      },
+      {
+        path: "products/:productId/edit",
+        element: <EditAProduct />,
       },
       {
         path: '/user/current',
