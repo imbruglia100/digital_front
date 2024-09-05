@@ -10,6 +10,8 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteStoreModal from "./DeleteStoreModal";
 import { LoadingImage } from "../LoadingItems/LoadingImage";
+import ProductList from "../ProductList/ProductList";
+import { getProductsByStoreId } from "../../redux/products";
 
 const StoreDetails = ({ edit }) => {
   const { storeId } = useParams();
@@ -20,6 +22,7 @@ const StoreDetails = ({ edit }) => {
   useEffect(() => {
     dispatch(clearSelected());
     dispatch(getSelectedStore(+storeId));
+    dispatch(getProductsByStoreId(+storeId))
   }, [dispatch]);
 
   // useEffect(() => {
@@ -70,7 +73,12 @@ const StoreDetails = ({ edit }) => {
             5.0 <FontAwesomeIcon icon={faStar} />
           </a>
         </div>
+        <div id="store-description">
+          {store.description}
+        </div>
       </div>
+
+      <ProductList />
     </div>
   );
 };
