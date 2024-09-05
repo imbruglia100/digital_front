@@ -2,3 +2,8 @@
     width: 100%;
     text-align: center;
 }
+
+#users-stores-container {
+    width: 80%;
+    margin: auto;
+}

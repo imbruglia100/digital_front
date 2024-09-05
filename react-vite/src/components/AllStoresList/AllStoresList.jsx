@@ -13,9 +13,9 @@ const AllStoresList = () => {
     }, [dispatch])
 
     return (
-        <>
+        <div style={{width:'80%', margin:'auto'}}>
             <StoresList />
-        </>
+        </div>
     )
 }
 

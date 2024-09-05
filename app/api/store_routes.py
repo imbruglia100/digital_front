@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
-from app.models import Store
+from app.models import Store, Product
 from app.models import db
 
 store_routes = Blueprint('stores', __name__)
@@ -64,6 +64,20 @@ def get_specific_store(storeId):
         }}), 404
 
     return jsonify(store.to_dict()), 200
+
+#get all products by store id
+@store_routes.route('/<int:storeId>/products')
+def get_products_by_store_id(storeId):
+    store = Store.query.filter_by(id=storeId).first()
+
+    if not store:
+        return jsonify({"errors": {
+            "Store": "Store does not exist"
+        }}), 404
+
+    products = Product.query.filter_by(store_id=storeId).all()
+
+    return jsonify({'products': [product.to_dict() for product in products]}), 200
 
 # update a store
 @store_routes.route('/<int:storeId>', methods=['PUT'])

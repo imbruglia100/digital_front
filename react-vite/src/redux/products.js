@@ -58,6 +58,21 @@ export const getUserProducts = () => async (dispatch) => {
     }
 };
 
+export const getProductsByStoreId = (storeId) => async (dispatch) => {
+    const res = await fetch(`/api/stores/${storeId}/products`);
+
+    if (res.ok) {
+        const data = await res.json();
+
+        if (data.errors) {
+            console.log("errors")
+            return {...data.errors};
+        }
+
+        dispatch(setProducts({...data.products}));
+    }
+};
+
 export const getSelectedProduct = (id) => async (dispatch) => {
     const res = await fetch(`/api/products/${id}`);
 

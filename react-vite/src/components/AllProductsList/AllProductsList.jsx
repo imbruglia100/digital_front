@@ -13,9 +13,9 @@ const AllProductsList = () => {
     }, [dispatch])
 
     return (
-        <>
+        <div style={{width:'80%', margin:'auto'}}>
             <ProductList />
-        </>
+        </div>
     )
 }
 
