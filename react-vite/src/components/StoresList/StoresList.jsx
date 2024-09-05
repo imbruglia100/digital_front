@@ -19,13 +19,12 @@ const StoresList = ({ userStore }) => {
     if (!stores.isLoading) {
       setFilteredStores(
         Object.values(stores).filter((val) => {
-          if(search){
-            return val.name.toLowerCase().startsWith(search.toLowerCase())
-          }else{
-            return Object.values(stores)
+          if (search) {
+            return val.name.toLowerCase().startsWith(search.toLowerCase());
+          } else {
+            return Object.values(stores);
           }
-        }
-        )
+        })
       );
     }
   }, [stores, search]);
@@ -38,10 +37,19 @@ const StoresList = ({ userStore }) => {
 
   const CreateAStore = () => {
     return (
-        <NavLink style={{display:'flex', alignItems:'center', justifyContent:'center', textDecoration:'none'}} className='store-card-container' to={'/stores/create'}>
-            <h1 style={{color:'#385dff'}}>Create a Store</h1>
-        </NavLink>
-        );
+      <NavLink
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textDecoration: "none",
+        }}
+        className='store-card-container'
+        to={"/stores/create"}
+      >
+        <h1 style={{ color: "#385dff" }}>Create a Store</h1>
+      </NavLink>
+    );
   };
 
   return (
@@ -63,10 +71,10 @@ const StoresList = ({ userStore }) => {
                   ""
                 )
               )}
-                {userStore && <CreateAStore />}
+              {userStore && <CreateAStore />}
             </>
           ) : (
-            <p>No stores found</p>
+            <>{userStore ? <CreateAStore /> : <p>No Stores found</p>}</>
           )
         ) : (
           <p>loading</p>
