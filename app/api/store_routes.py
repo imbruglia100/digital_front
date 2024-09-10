@@ -3,6 +3,7 @@ from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
 from app.models import Store, Product
 from app.models import db
+from ..aws import upload_file_to_s3, get_unique_filename
 
 store_routes = Blueprint('stores', __name__)
 
@@ -30,10 +31,13 @@ def create_store():
         owner_id=data.get('owner_id'),
         name=data["name"],
         type= data["type"],
-        description=data["description"],
-        store_img_url= data['store_img_url'],
-        store_banner_url= data['store_banner_url'],
+        description=data["description"]
     )
+    img = data['store_img_url']
+    print(img, '==================================================')
+
+    #     store_img_url= data['store_img_url'],
+    #     store_banner_url= data['store_banner_url'],
 
     db.session.add(new_store)
     db.session.commit()
