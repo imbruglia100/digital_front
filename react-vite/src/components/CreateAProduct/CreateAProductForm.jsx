@@ -3,7 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./CreateAProductForm.css";
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { addNewProduct } from "../../redux/products";
 import { getUserStores } from "../../redux/stores";
 
@@ -172,7 +172,10 @@ const CreateAProductForm = () => {
         </button>
       </form>
     ) : (
-      <h1>Must create a store first!</h1>
+      <div style={{display:'flex', flexDirection:'column', width:'fit-content', margin:'auto'}}>
+        <h1>You must create a store first!</h1>
+        <NavLink to={'/stores/create'} className="primary-btn">Create a store</NavLink>
+      </div>
     )
   ) : (
     <Navigate to='/login' />
