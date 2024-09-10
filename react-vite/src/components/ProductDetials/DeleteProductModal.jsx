@@ -21,11 +21,14 @@ const DeleteProductModal = ({productId}) => {
 
     }
     return (
-        <div>
-            <h2>Delete Store</h2>
+        <div className="delete-modal">
+            <h2>Delete Product</h2>
             <p>You are about to delete this product. Are you sure?</p>
+            <div>
             <button className="primary-btn delete-btn" onClick={handleDelete}>Delete</button>
             <button className="primary-btn edit-btn" onClick={closeModal}>Exit</button>
+
+            </div>
         </div>
     )
 }

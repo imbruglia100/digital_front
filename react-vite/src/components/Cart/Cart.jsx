@@ -6,7 +6,7 @@ const Cart = ({className}) => {
 
     return (
         <div className={className}>
-            <FontAwesomeIcon icon={faCartShopping} />
+            <FontAwesomeIcon icon={faCartShopping} onClick={() => alert("Feature is in development")} />
         </div>
     )
 }
