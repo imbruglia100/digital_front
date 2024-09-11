@@ -39,7 +39,7 @@ const ProductList = ({ userProduct }) => {
     <div id='products-list-cont'>
       <div className='product-actions'>
         {userProduct ?
-        <NavLink className='navlink' to={"/products/create"}>
+        <NavLink className='primary-btn' to={"/products/create"}>
           Create new Product
         </NavLink>
         :

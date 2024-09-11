@@ -33,6 +33,8 @@
 }
 .edit-btn {
    text-decoration: none;
+
+   cursor: pointer;
 }
 
 .delete-btn {
@@ -43,8 +45,6 @@
 
 .delete-btn:hover {
     background-color: rgb(179, 41, 41) !important;
-    cursor: pointer;
-
 }
 
 .store-detials-body {

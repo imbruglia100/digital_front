@@ -7,15 +7,15 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { addNewStore } from "../../redux/stores";
 
 const CreateAStoreForm = () => {
-  const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [newStore, setNewStore] = useState({
     owner_id: user?.id,
     name: "",
     description: "",
     type: "",
-    store_img_url: new File([], 'untitled'),
+    store_img_url: "",
     store_banner_url: "",
   });
 
@@ -24,7 +24,7 @@ const CreateAStoreForm = () => {
 
     const addedStore = await dispatch(addNewStore(newStore));
 
-    console.log(addedStore, '================================================');
+    console.log(addedStore);
     if (addedStore?.id) {
       return navigate(`/stores/${addedStore.id}`);
     }
@@ -35,7 +35,9 @@ const CreateAStoreForm = () => {
       <h1>Create Your Store</h1>
 
       <div className='form-item'>
-        <label>Name</label>
+        <label>
+          Name<span className='required'>*</span>
+        </label>
         <input
           value={newStore.name}
           onChange={(e) =>
@@ -47,8 +49,11 @@ const CreateAStoreForm = () => {
       </div>
 
       <div className='form-item'>
-        <label>Description</label>
+        <label>
+          Description<span className='required'>*</span>
+        </label>
         <textarea
+          required
           value={newStore.description}
           onChange={(e) =>
             setNewStore((prev) => ({ ...prev, description: e.target.value }))
@@ -57,7 +62,9 @@ const CreateAStoreForm = () => {
       </div>
 
       <div className='form-item'>
-        <label>Type</label>
+        <label>
+          Category<span className='required'>*</span>
+        </label>
         <input
           value={newStore.type}
           onChange={(e) =>
@@ -69,17 +76,15 @@ const CreateAStoreForm = () => {
       </div>
 
       <div className='form-item'>
-        <label>Profile Image</label>
+        <label>
+          Profile Image
+        </label>
         <input
-          onChange={(e) => {
-            console.log(e.target.files[0]);
-            return setNewStore((prev) => ({
-              ...prev,
-              store_img_url: e.target.files[0],
-            }));
-          }}
-          type='file'
-          accept={'image/*'}
+          value={newStore.store_img_url}
+          onChange={(e) =>
+            setNewStore((prev) => ({ ...prev, store_img_url: e.target.value }))
+          }
+          type='text'
         />
       </div>
 
@@ -87,12 +92,12 @@ const CreateAStoreForm = () => {
         <label>Banner Image</label>
         <input
           value={newStore.store_banner_url}
-          onChange={(e) => {
+          onChange={(e) =>
             setNewStore((prev) => ({
               ...prev,
               store_banner_url: e.target.value,
-            }));
-          }}
+            }))
+          }
           type='text'
         />
       </div>
