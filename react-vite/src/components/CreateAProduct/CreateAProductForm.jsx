@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { addNewProduct } from "../../redux/products";
 import { getUserStores } from "../../redux/stores";
-import e from "express";
 
 const CreateAProductForm = () => {
   const user = useSelector((state) => state.session.user);
@@ -15,6 +14,8 @@ const CreateAProductForm = () => {
   const [errors, setErrors] = useState({
   });
 
+  const [image, setImage] = useState(null);
+  
   const dispatch = useDispatch();
   const [newProduct, setNewProduct] = useState({
     title: "",
@@ -47,9 +48,6 @@ const CreateAProductForm = () => {
     if (newProduct.stock_amount < 0 || isNaN(newProduct.stock_amount))
       ererrorsTemprors.stock_amount =
         "Stock amount must be a non-negative number.";
-    console.log(errorsTemp)
-    setErrors(errorsTemp);
-    console.log(errors)
 
     if (Object.values(errors).length === 0) {
       const addedProduct = await dispatch(addNewProduct(newProduct));
@@ -62,7 +60,7 @@ const CreateAProductForm = () => {
 
   return user ? (
     storesArr.length > 0 ? (
-      <form action='POST' onSubmit={handleSubmit}>
+      <form action='POST' onSubmit={handleSubmit} encType="multipart/form-data">
         <h1>Create Your Product</h1>
 
         <div className='form-item'>
@@ -165,7 +163,8 @@ const CreateAProductForm = () => {
                 product_img: e.target.value,
               }))
             }
-            type='text'
+            type='file'
+            accept="image/*"
           />
         </div>
         <button className='primary-btn' type='submit'>
