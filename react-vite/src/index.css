@@ -6,12 +6,35 @@
 
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+input:user-valid,
+select:user-valid,
+textarea:user-valid,
+button:user-valid {
+  border: 1px solid var(--primary-color);
+  /* border: green 1px solid; */
+}
+
+input:user-invalid,
+select:user-invalid,
+textarea:user-invalid,
+button:user-invalid {
+  border: rgb(250, 94, 94) 1px solid;
+}
+
 .primary-btn {
   background-color: var(--primary-color);
   color: white !important;
   padding: 9px 16px;
   border-radius: 100px;
   border: none;
+  text-decoration: none;
 }
 
 .primary-btn:hover {

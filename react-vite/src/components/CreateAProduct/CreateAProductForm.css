@@ -18,11 +18,6 @@ form h1 {
     margin: 5px 0;
 }
 
-.form-item input:active + label {
-    color: red;
-}
-
-
 .form-item label {
     font-weight: 500;
     color: var(--neutral-color);
@@ -33,6 +28,8 @@ form h1 {
 .form-item input, select {
     padding: 5px;
 }
+
+
 
 .form-item textarea {
     resize: none;
@@ -59,4 +56,8 @@ textarea::-webkit-scrollbar-track {
 form button {
     margin: 20px 0;
     width: 100%;
+}
+
+.required {
+    color: rgb(245, 81, 81);
 }

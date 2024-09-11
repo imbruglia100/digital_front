@@ -12,7 +12,7 @@ def all_stores():
     return jsonify({'products': [product.to_dict() for product in products]}), 200
 
 # create a product
-@product_routes.route('/', methods=["POST"])
+@product_routes.route('', methods=["POST"])
 def create_prodcut():
     data = request.get_json()
     errors = {}
@@ -21,6 +21,8 @@ def create_prodcut():
         errors["title"] = 'Title is required'
     if not data["price"]:
         errors["price"] = 'Price is required'
+    if not data["store_id"]:
+        errors["store_id"] = 'Must select a store'
 
     if errors:
         return jsonify(errors), 404
@@ -81,7 +83,7 @@ def update_a_product(productId):
         return jsonify({"errors": {
             "product": "You don't own this product"
         }}), 304
-    
+
     product.title = data.get('title', product.title)
     product.description = data.get('description', product.description)
     product.price = data.get('price', product.price)
