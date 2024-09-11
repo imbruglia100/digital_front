@@ -11,6 +11,8 @@
     color: black;
     background-color: #eaf2ff;
     transition: all 140ms ease-in-out;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .product-card-container:hover {
@@ -46,11 +48,13 @@
     object-fit: cover;
     object-position: center;
     border-radius: 4px;
+    -webkit-user-drag: none;
 }
 
 .product-info {
     display: flex;
     height: 100%;
+    width: fit-content;
     justify-content: space-between;
     flex-direction: column;
     align-items: center;
@@ -62,6 +66,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+}
+
+.second-half-product-info > * {
+    width: fit-content;
 }
 
 .product-amount {
@@ -84,9 +92,4 @@
 
 .first-half-product-info > * {
     margin: 0 3px;
-}
-
-.product-info {
-    display: flex;
-    flex-grow: 1;
 }

@@ -11,6 +11,8 @@
     transition: all 140ms ease-in-out;
     text-decoration: none;
     color: black;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .store-card-container:hover {

@@ -32,7 +32,34 @@ def seed_stores():
         store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
     )
 
-    db.session.add_all([demos_store,bills_store,johns_store])
+    demos_store2 = Store(
+        owner_id=1,
+        name='Longs Jewlers',
+        description='We have all the jewlery.',
+        type = 'Jewlery',
+        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
+        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+    )
+
+    bills_store2 = Store(
+        owner_id=2,
+        name='Home Depot',
+        description='We have all the tools you need to finish that project.',
+        type = 'Home and Garden',
+        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
+        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+    )
+
+    johns_store2 = Store(
+        owner_id=3,
+        name='Best Buy',
+        description='We have all your tech needs',
+        type = 'Technology',
+        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
+        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+    )
+
+    db.session.add_all([demos_store,bills_store,johns_store,demos_store2,bills_store2,johns_store2])
 
     db.session.commit()
 
