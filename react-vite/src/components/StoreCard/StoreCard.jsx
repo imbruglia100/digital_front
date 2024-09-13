@@ -4,10 +4,10 @@ import { NavLink } from "react-router-dom";
 import "./StoreCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-const StoreCard = ({ store, userStore }) => {
+const StoreCard = ({ store }) => {
   return (
     <NavLink
-      to={userStore ? `/stores/${store.id}` : `${store.id}`}
+      to={`/stores/${store.id}`}
       className='store-card-container'
     >
       <div className='store-img-container'>

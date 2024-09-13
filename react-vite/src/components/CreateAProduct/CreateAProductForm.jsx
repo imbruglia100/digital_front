@@ -3,7 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./CreateAProductForm.css";
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { addNewProduct } from "../../redux/products";
 import { getUserStores } from "../../redux/stores";
 
@@ -15,7 +15,7 @@ const CreateAProductForm = () => {
   });
 
   const [image, setImage] = useState(null);
-  
+
   const dispatch = useDispatch();
   const [newProduct, setNewProduct] = useState({
     title: "",
@@ -146,7 +146,7 @@ const CreateAProductForm = () => {
               })
             }
           >
-            <option value='' >Choose a Store</option>
+            <option value=''>Choose a Store</option>
             {storesArr.map((el) => (
               <option value={el.id}>{el.name}</option>
             ))}
@@ -172,9 +172,18 @@ const CreateAProductForm = () => {
         </button>
       </form>
     ) : (
-      <div style={{display:'flex', flexDirection:'column', width:'fit-content', margin:'auto'}}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "fit-content",
+          margin: "auto",
+        }}
+      >
         <h1>You must create a store first!</h1>
-        <NavLink to={'/stores/create'} className="primary-btn">Create a store</NavLink>
+        <NavLink to={"/stores/create"} className='primary-btn'>
+          Create a store
+        </NavLink>
       </div>
     )
   ) : (

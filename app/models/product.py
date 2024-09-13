@@ -25,5 +25,5 @@ class Product(db.Model):
             'price': self.price,
             'stock_amount': self.stock_amount,
             'product_img': self.product_img,
-            'Store' : self.store.to_dict()
+            'Store' : self.store.to_dict() if self.store else {}
         }
