@@ -11,8 +11,7 @@ const CreateAProductForm = () => {
   const user = useSelector((state) => state.session.user);
   const userStores = useSelector((state) => state.stores.allStores);
   const storesArr = Object.values(userStores);
-  const [errors, setErrors] = useState({
-  });
+  const [errors, setErrors] = useState({});
 
   const [image, setImage] = useState(null);
 
@@ -50,9 +49,19 @@ const CreateAProductForm = () => {
         "Stock amount must be a non-negative number.";
 
     if (Object.values(errors).length === 0) {
-      const addedProduct = await dispatch(addNewProduct(newProduct));
+      const formData = new FormData();
+      formData.append("title", newProduct.title);
+      formData.append("description", newProduct.description);
+      formData.append("price", newProduct.price);
+      formData.append("store_id", newProduct.store_id);
+      formData.append("stock_amount", newProduct.stock_amount);
+      if (newProduct.product_img) {
+        formData.append("image", newProduct.product_img);
+      }
+      console.log(Array.from(formData.entries()))
+      const addedProduct = await dispatch(addNewProduct(formData));
 
-      if (!addedProduct?.errors) {
+      if (addedProduct?.id) {
         navigate(`/products/${addedProduct.id}`);
       }
     }
@@ -60,7 +69,7 @@ const CreateAProductForm = () => {
 
   return user ? (
     storesArr.length > 0 ? (
-      <form action='POST' onSubmit={handleSubmit} encType="multipart/form-data">
+      <form action='POST' onSubmit={handleSubmit} encType='multipart/form-data'>
         <h1>Create Your Product</h1>
 
         <div className='form-item'>
@@ -156,15 +165,14 @@ const CreateAProductForm = () => {
         <div className='form-item'>
           <label>Product Image</label>
           <input
-            value={newProduct.product_img}
             onChange={(e) =>
               setNewProduct((prev) => ({
                 ...prev,
-                product_img: e.target.value,
+                product_img: e.target.files[0],
               }))
             }
             type='file'
-            accept="image/*"
+            accept='image/*'
           />
         </div>
         <button className='primary-btn' type='submit'>

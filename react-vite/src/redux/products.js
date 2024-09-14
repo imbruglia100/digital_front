@@ -1,161 +1,171 @@
-const SET_PRODUCTS = 'products/setProducts'
-const SELECT_PRODUCT = 'products/setSelectedProduct'
-const ADD_PRODUCT = 'products/addProduct'
-const CLEAR_SELECTED = 'products/clearSelected'
-const REMOVE_PRODUCT = 'products/removeProduct'
+/** @format */
+
+const SET_PRODUCTS = "products/setProducts";
+const SELECT_PRODUCT = "products/setSelectedProduct";
+const ADD_PRODUCT = "products/addProduct";
+const CLEAR_SELECTED = "products/clearSelected";
+const REMOVE_PRODUCT = "products/removeProduct";
 
 const setProducts = (payload) => ({
-    type: SET_PRODUCTS,
-    payload //product
-})
+  type: SET_PRODUCTS,
+  payload, //product
+});
 
 const addProduct = (payload) => ({
-    type: ADD_PRODUCT,
-    payload //new product
-})
+  type: ADD_PRODUCT,
+  payload, //new product
+});
 
 const selectProduct = (payload) => ({
-    type: SELECT_PRODUCT,
-    payload //product
-})
+  type: SELECT_PRODUCT,
+  payload, //product
+});
 
 export const clearSelected = () => ({
-    type: CLEAR_SELECTED
-})
+  type: CLEAR_SELECTED,
+});
 
 const removeProduct = (payload) => ({
-    type: REMOVE_PRODUCT,
-    payload //product id
-})
+  type: REMOVE_PRODUCT,
+  payload, //product id
+});
 
 export const getProducts = () => async (dispatch) => {
-    const res = await fetch('/api/products')
+  const res = await fetch("/api/products");
 
-    if(res.ok){
-        const data = await res.json()
+  if (res.ok) {
+    const data = await res.json();
 
-        if (data.errors) {
-            console.log("errors")
-            return {...data.errors};
-        }
-
-        dispatch(setProducts({...data.products}));
+    if (data.errors) {
+      console.log("errors");
+      return { ...data.errors };
     }
-}
+
+    dispatch(setProducts({ ...data.products }));
+  }
+};
 
 export const getUserProducts = () => async (dispatch) => {
-    const res = await fetch("/api/products/current");
+  const res = await fetch("/api/products/current");
 
-    if (res.ok) {
-        const data = await res.json();
+  if (res.ok) {
+    const data = await res.json();
 
-        if (data.errors) {
-            console.log("errors")
-            return {...data.errors};
-        }
-
-        dispatch(setProducts({...data.products}));
+    if (data.errors) {
+      console.log("errors");
+      return { ...data.errors };
     }
+
+    dispatch(setProducts({ ...data.products }));
+  }
 };
 
 export const getProductsByStoreId = (storeId) => async (dispatch) => {
-    const res = await fetch(`/api/stores/${storeId}/products`);
+  const res = await fetch(`/api/stores/${storeId}/products`);
 
-    if (res.ok) {
-        const data = await res.json();
+  if (res.ok) {
+    const data = await res.json();
 
-        if (data.errors) {
-            console.log("errors")
-            return {...data.errors};
-        }
-
-        dispatch(setProducts({...data.products}));
+    if (data.errors) {
+      console.log("errors");
+      return { ...data.errors };
     }
+
+    dispatch(setProducts({ ...data.products }));
+  }
 };
 
 export const getSelectedProduct = (id) => async (dispatch) => {
-    const res = await fetch(`/api/products/${id}`);
+  const res = await fetch(`/api/products/${id}`);
 
-    if (res.ok) {
-        const data = await res.json();
-        if (data.errors) {
-            return {...data.errors};
-        }
-
-        dispatch(selectProduct({...data}));
+  if (res.ok) {
+    const data = await res.json();
+    if (data.errors) {
+      return { ...data.errors };
     }
+
+    dispatch(selectProduct({ ...data }));
+  }
 };
 
-export const addNewProduct = (newProduct) => async (dispatch) =>{
-    const res = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newProduct)
-    })
+export const addNewProduct = (newProduct) => async (dispatch) => {
+  const res = await fetch("/api/products", {
+    method: "POST",
+    body: newProduct,
+  });
 
-    if(res.ok){
-        const data = await res.json()
+  if (res.ok) {
+    const data = await res.json();
 
-        if(data.errors){
-            return {...data.errors};
-        }
-
-        dispatch(addProduct(data))
-        return data
+    if (data.errors) {
+      return { ...data.errors };
     }
-}
 
-export const editAProduct = (product) => async (dispatch) =>{
-    const res = await fetch(`/api/products/${+product?.id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({...product})
-    })
+    dispatch(addProduct(data));
+    return data;
+  }
+};
 
-    if(res.ok){
-        const data = await res.json()
+export const editAProduct = (product) => async (dispatch) => {
+  const res = await fetch(`/api/products/${+product?.id}`, {
+    method: "PUT",
+    body: product,
+  });
 
-        if(data.errors){
-            return {...data.errors};
-        }
+  if (res.ok) {
+    const data = await res.json();
 
-        dispatch(addProduct(data))
-        return data
+    if (data.errors) {
+      return { ...data.errors };
     }
-}
 
-export const deleteAProduct = (productId) => async (dispatch) =>{
-    const res = await fetch(`/api/products/${+productId}`, {
-        method: "DELETE"
-    })
+    dispatch(addProduct(data));
+    return data;
+  }
+};
 
-    if(res.ok){
-        dispatch(removeProduct(+productId))
-    }
-}
+export const deleteAProduct = (productId) => async (dispatch) => {
+  const res = await fetch(`/api/products/${+productId}`, {
+    method: "DELETE",
+  });
 
-const initialState = {allProducts: {isLoading: true}, selectedProduct: {isLoading: true}}
+  if (res.ok) {
+    dispatch(removeProduct(+productId));
+  }
+};
+
+const initialState = {
+  allProducts: { isLoading: true },
+  selectedProduct: { isLoading: true },
+};
 
 function productsReducer(state = initialState, action) {
-    switch (action.type) {
-      case SET_PRODUCTS:
-        return { ...state, allProducts: {...action.payload} };
-      case ADD_PRODUCT:
-        return { ...state, allProducts: {...state.allProducts, [action.payload.id]: action.payload, isLoading: false} };
-      case SELECT_PRODUCT:
-            return { ...state, selectedProduct: {...action.payload, isLoading: false} };
-      case CLEAR_SELECTED:
-            return {...state, selectedProduct: {} }
-      case REMOVE_PRODUCT:
-        delete state.allProducts[action.payload]
-        return state;
-      default:
-        return state;
-    }
+  switch (action.type) {
+    case SET_PRODUCTS:
+      return { ...state, allProducts: { ...action.payload } };
+    case ADD_PRODUCT:
+      return {
+        ...state,
+        allProducts: {
+          ...state.allProducts,
+          [action.payload.id]: action.payload,
+          isLoading: false,
+        },
+      };
+    case SELECT_PRODUCT:
+      return {
+        ...state,
+        selectedProduct: { ...action.payload, isLoading: false },
+      };
+    case CLEAR_SELECTED:
+      return { ...state, selectedProduct: {} };
+    case REMOVE_PRODUCT:
+      const newProducts = { ...state.allProducts };
+      delete newProducts[action.payload];
+      return { ...state, allProducts: newProducts };
+    default:
+      return state;
   }
+}
 
-  export default productsReducer;
+export default productsReducer;

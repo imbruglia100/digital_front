@@ -24,7 +24,7 @@ button:user-valid {
 input:user-invalid,
 select:user-invalid,
 textarea:user-invalid,
-button:user-invalid {
+button:user-invalid{
   border: rgb(250, 94, 94) 1px solid;
 }
 

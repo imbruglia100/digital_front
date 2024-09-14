@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
 from app.models import db, Product, Store
+from ..aws import upload_file_to_s3, remove_file_from_s3, get_unique_filename, ALLOWED_EXTENSIONS
+from ..forms.image_form import ImageForm
 
 product_routes = Blueprint('products', __name__)
 
@@ -14,25 +16,42 @@ def all_stores():
 # create a product
 @product_routes.route('', methods=["POST"])
 def create_prodcut():
-    data = request.get_json()
+    data = request.form
     errors = {}
+    file = ''
 
-    if not data["title"]:
+
+    if not data.get("title"):
         errors["title"] = 'Title is required'
-    if not data["price"]:
+    if not data.get("price"):
         errors["price"] = 'Price is required'
-    if not data["store_id"]:
+    if not data.get("store_id"):
         errors["store_id"] = 'Must select a store'
 
+    print(data.to_dict(), '==========================')
     if errors:
         return jsonify(errors), 404
+
+    if 'image' in request.files:
+        file = request.files['image']
+
+
+        if file.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
+            return jsonify({"errors": "File type not allowed"}), 400
+
+        file.filename = get_unique_filename(file.filename)
+
+
+        upload = upload_file_to_s3(file, acl="public-read")
+
+
     new_product = Product(
         store_id=data.get('store_id'),
-        title=data["title"],
-        description= data["description"],
-        price=data["price"],
-        stock_amount= data['stock_amount'],
-        product_img= data['product_img'],
+        title=data.get("title"),
+        description= data.get("description"),
+        price=data.get("price"),
+        stock_amount= data.get('stock_amount'),
+        product_img= upload["url"],
     )
 
     db.session.add(new_product)
@@ -72,7 +91,7 @@ def get_specific_product(productId):
 def update_a_product(productId):
     product = Product.query.get(productId)
     store = Store.query.get(product.store_id)
-    data = request.get_json()
+    data = request.form
 
     if not product:
         return jsonify({"errors": {
@@ -84,11 +103,15 @@ def update_a_product(productId):
             "product": "You don't own this product"
         }}), 304
 
+    if data.get('product_img').filename != product.product_img:
+        remove_file_from_s3(product.product_img)
+        product.product_img = get_unique_filename(data.get('product_img').filename)
+        upload_file_to_s3(product.product_img)
+
     product.title = data.get('title', product.title)
     product.description = data.get('description', product.description)
     product.price = data.get('price', product.price)
     product.stock_amount = data.get('stock_amount', product.stock_amount)
-    product.product_img = data.get('product_img', product.product_img)
 
     db.session.commit()
 
@@ -108,6 +131,8 @@ def delete_product(productId):
         return jsonify({"errors": {
             "product": "You don't own the product"
         }}), 404
+
+    remove_file_from_s3(product.product_img)
 
     db.session.delete(product)
     db.session.commit()

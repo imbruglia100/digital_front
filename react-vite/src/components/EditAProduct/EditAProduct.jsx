@@ -10,8 +10,8 @@ import { getUserStores } from "../../redux/stores";
 
 const EditAProduct = () => {
   const user = useSelector((state) => state.session.user);
-  const product = useSelector(state => state.products.selectedProduct)
-  const userStores = useSelector(state=>state.stores.allStores)
+  const product = useSelector((state) => state.products.selectedProduct);
+  const userStores = useSelector((state) => state.stores.allStores);
 
   const dispatch = useDispatch();
   const [updatedProduct, setUpdatedProduct] = useState({
@@ -24,22 +24,33 @@ const EditAProduct = () => {
     stock_amount: product.stock_amount || 0,
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect( () => {
-    setUpdatedProduct({...product})
-  }, [product])
+  useEffect(() => {
+    setUpdatedProduct({ ...product });
+  }, [product]);
 
-  useEffect(()=>{
-    dispatch(getUserStores())
-  },[dispatch])
+  useEffect(() => {
+    dispatch(getUserStores());
+  }, [dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const addedProduct = await dispatch(editAProduct(updatedProduct));
+
+    const formData = new FormData();
+    console.log(updatedProduct)
+    formData.append("id", updatedProduct.id);
+    formData.append("store_id", updatedProduct.store_id);
+    formData.append("title", updatedProduct.title);
+    formData.append("description", updatedProduct.description);
+    formData.append("price", updatedProduct.price);
+    formData.append("product_img", updatedProduct.product_img);
+    formData.append("stock_amount", updatedProduct.stock_amount);
+
+    const addedProduct = await dispatch(editAProduct(formData));
 
     if (!addedProduct?.errors) {
-        navigate(`/products/${product?.id}`)
+      navigate(`/products/${product?.id}`);
     }
   };
 
@@ -65,7 +76,10 @@ const EditAProduct = () => {
           value={updatedProduct.description}
           required
           onChange={(e) =>
-            setUpdatedProduct((prev) => ({ ...prev, description: e.target.value }))
+            setUpdatedProduct((prev) => ({
+              ...prev,
+              description: e.target.value,
+            }))
           }
         />
       </div>
@@ -110,9 +124,16 @@ const EditAProduct = () => {
 
       <div className='form-item'>
         <label>Store</label>
-        <select required onChange={(e) => setUpdatedProduct(prev=> {return {...prev, store_id:e.target.value}})}>
-          {Object.values(userStores).map(el => {
-            return <option value={el.id}>{el.name}</option>
+        <select
+          required
+          onChange={(e) =>
+            setUpdatedProduct((prev) => {
+              return { ...prev, store_id: e.target.value };
+            })
+          }
+        >
+          {Object.values(userStores).map((el) => {
+            return <option value={el.id}>{el.name}</option>;
           })}
         </select>
       </div>
@@ -120,11 +141,15 @@ const EditAProduct = () => {
       <div className='form-item'>
         <label>Product Image</label>
         <input
-          value={updatedProduct.product_img}
+          value={updatedProduct.product_img.filename}
           onChange={(e) =>
-            setUpdatedProduct((prev) => ({ ...prev, product_img: e.target.value }))
+            setUpdatedProduct((prev) => ({
+              ...prev,
+              product_img: e.target.files[0],
+            }))
           }
-          type='text'
+          type='file'
+          accept='image/*'
         />
       </div>
       <button className='primary-btn' type='submit'>
