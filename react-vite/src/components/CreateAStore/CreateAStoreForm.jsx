@@ -90,7 +90,7 @@ const CreateAStoreForm = () => {
           onChange={(e) =>
             setNewStore((prev) => ({ ...prev, store_img_url: e.target.files[0] }))
           }
-          accept='image/*'
+          accept='.pdf,.png,.jpg,.jpeg'
           type='file'
         />
       </div>
@@ -104,7 +104,7 @@ const CreateAStoreForm = () => {
               store_banner_url: e.target.files[0],
             }))
           }
-          accept='image/*'
+          accept='.pdf,.png,.jpg,.jpeg'
           type='file'
         />
       </div>

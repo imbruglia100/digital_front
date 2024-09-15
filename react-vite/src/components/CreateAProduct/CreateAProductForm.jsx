@@ -171,7 +171,7 @@ const CreateAProductForm = () => {
               }))
             }
             type='file'
-            accept='image/*'
+            accept='.pdf,.png,.jpg,.jpeg'
           />
         </div>
         <button className='primary-btn' type='submit'>
