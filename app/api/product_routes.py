@@ -41,6 +41,7 @@ def create_prodcut():
 
 
         upload = upload_file_to_s3(file, acl="public-read")
+        print(upload, '=================================')
 
 
     new_product = Product(
