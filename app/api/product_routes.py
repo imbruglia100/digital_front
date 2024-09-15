@@ -17,7 +17,7 @@ def all_stores():
 def create_prodcut():
     data = request.form
     errors = {}
-    file = ''
+    upload = ''
 
 
     if not data.get("title"):
@@ -40,8 +40,7 @@ def create_prodcut():
         file.filename = get_unique_filename(file.filename)
 
 
-        upload = upload_file_to_s3(file, acl="public-read")
-        print(upload, '=================================')
+        upload = upload_file_to_s3(file, acl="public-read")["url"]
 
 
     new_product = Product(
@@ -50,7 +49,7 @@ def create_prodcut():
         description= data.get("description"),
         price=data.get("price"),
         stock_amount= data.get('stock_amount'),
-        product_img= upload["url"],
+        product_img= upload,
     )
 
     db.session.add(new_product)
@@ -130,8 +129,9 @@ def delete_product(productId):
         return jsonify({"errors": {
             "product": "You don't own the product"
         }}), 404
-
-    remove_file_from_s3(product.product_img)
+    
+    if product.product_img:
+        remove_file_from_s3(product.product_img)
 
     db.session.delete(product)
     db.session.commit()

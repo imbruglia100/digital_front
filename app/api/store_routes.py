@@ -18,6 +18,8 @@ def all_stores():
 @store_routes.route('', methods=["POST"])
 def create_store():
     data = request.form
+    store_img_url_upload=''
+    store_banner_url_upload=''
     errors = {}
 
     if not data.get("name"):
@@ -40,8 +42,7 @@ def create_store():
         store_img_url.filename = get_unique_filename(store_img_url.filename)
 
 
-        store_img_url_upload = upload_file_to_s3(store_img_url, acl="public-read")
-        print(store_img_url_upload, '================================')
+        store_img_url_upload = upload_file_to_s3(store_img_url, acl="public-read")['url']
 
     if 'store_banner_url' in request.files:
         store_banner_url = request.files['store_banner_url']
@@ -53,16 +54,15 @@ def create_store():
         store_banner_url.filename = get_unique_filename(store_banner_url.filename)
 
 
-        store_banner_url_upload = upload_file_to_s3(store_banner_url, acl="public-read")
-        print(store_banner_url_upload, '================================')
+        store_banner_url_upload = upload_file_to_s3(store_banner_url, acl="public-read")['url']
 
     new_store = Store(
         owner_id=data.get('owner_id'),
         name=data.get("name"),
         type= data.get("type"),
         description=data.get("description"),
-        store_img_url=store_img_url_upload['url'],
-        store_banner_url=store_banner_url_upload['url']
+        store_img_url=store_img_url_upload,
+        store_banner_url=store_banner_url_upload
     )
 
     db.session.add(new_store)
@@ -154,9 +154,10 @@ def delete_store(storeId):
         return jsonify({"errors": {
             "Store": "Store does not exist"
         }}), 404
-
-    remove_file_from_s3(store.store_img_url)
-    remove_file_from_s3(store.store_banner_url)
+    if store.store_img_url:
+        remove_file_from_s3(store.store_img_url)
+    if store.store_banner_url:
+        remove_file_from_s3(store.store_banner_url)
 
     db.session.delete(store)
     db.session.commit()
