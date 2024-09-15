@@ -41,7 +41,7 @@ def create_store():
 
 
         store_img_url_upload = upload_file_to_s3(store_img_url, acl="public-read")
-        print(store_img_url_upload['url'], '================================')
+        print(store_img_url_upload, '================================')
 
     if 'store_banner_url' in request.files:
         store_banner_url = request.files['store_banner_url']
@@ -54,7 +54,7 @@ def create_store():
 
 
         store_banner_url_upload = upload_file_to_s3(store_banner_url, acl="public-read")
-        print(store_banner_url_upload['url'], '================================')
+        print(store_banner_url_upload, '================================')
 
     new_store = Store(
         owner_id=data.get('owner_id'),
