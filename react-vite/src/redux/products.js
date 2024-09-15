@@ -37,7 +37,6 @@ export const getProducts = () => async (dispatch) => {
     const data = await res.json();
 
     if (data.errors) {
-      console.log("errors");
       return { ...data.errors };
     }
 
@@ -52,7 +51,6 @@ export const getUserProducts = () => async (dispatch) => {
     const data = await res.json();
 
     if (data.errors) {
-      console.log("errors");
       return { ...data.errors };
     }
 
@@ -67,7 +65,6 @@ export const getProductsByStoreId = (storeId) => async (dispatch) => {
     const data = await res.json();
 
     if (data.errors) {
-      console.log("errors");
       return { ...data.errors };
     }
 

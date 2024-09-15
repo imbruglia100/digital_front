@@ -33,9 +33,9 @@ export const getStores = () => async (dispatch) => {
 
     if (res.ok) {
         const data = await res.json();
-        console.log('Stores:', data);
+
         if (data.errors) {
-            console.log("errors")
+
             return {...data.errors};
         }
 
@@ -48,9 +48,9 @@ export const getUserStores = () => async (dispatch) => {
 
     if (res.ok) {
         const data = await res.json();
-        console.log('Stores:', data);
+
         if (data.errors) {
-            console.log("errors")
+
             return {...data.errors};
         }
 
@@ -92,7 +92,6 @@ export const addNewStore = (newStore) => async (dispatch) =>{
 }
 
 export const editAStore = (store) => async (dispatch) =>{
-    console.log(store)
     const res = await fetch(`/api/stores/${+store?.id}`, {
         method: "PUT",
         body: store

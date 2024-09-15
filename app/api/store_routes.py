@@ -28,7 +28,7 @@ def create_store():
         errors["type"] = 'Type is required'
 
     if errors:
-        print(errors)
+
         return jsonify(errors), 404
 
 

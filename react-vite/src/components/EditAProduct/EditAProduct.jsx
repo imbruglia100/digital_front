@@ -38,7 +38,6 @@ const EditAProduct = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    console.log(updatedProduct)
     formData.append("id", updatedProduct.id);
     formData.append("store_id", updatedProduct.store_id);
     formData.append("title", updatedProduct.title);
