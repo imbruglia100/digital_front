@@ -74,10 +74,7 @@ export const getSelectedStore = (id) => async (dispatch) => {
 export const addNewStore = (newStore) => async (dispatch) =>{
     const res = await fetch("/api/stores", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newStore)
+        body: newStore
     })
 
     if(res.ok){
@@ -98,10 +95,7 @@ export const editAStore = (store) => async (dispatch) =>{
     console.log(store)
     const res = await fetch(`/api/stores/${+store?.id}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({...store})
+        body: store
     })
 
     if(res.ok){

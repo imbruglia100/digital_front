@@ -21,10 +21,17 @@ const CreateAStoreForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData()
 
-    const addedStore = await dispatch(addNewStore(newStore));
+    formData.append('owner_id', user?.id)
+    formData.append('name', newStore.name)
+    formData.append('description', newStore?.description)
+    formData.append('type', newStore?.type)
+    formData.append('store_img_url', newStore?.store_img_url)
+    formData.append('store_banner_url', newStore?.store_banner_url)
 
-    console.log(addedStore);
+    const addedStore = await dispatch(addNewStore(formData));
+
     if (addedStore?.id) {
       return navigate(`/stores/${addedStore.id}`);
     }
@@ -80,25 +87,25 @@ const CreateAStoreForm = () => {
           Profile Image
         </label>
         <input
-          value={newStore.store_img_url}
           onChange={(e) =>
-            setNewStore((prev) => ({ ...prev, store_img_url: e.target.value }))
+            setNewStore((prev) => ({ ...prev, store_img_url: e.target.files[0] }))
           }
-          type='text'
+          accept='image/*'
+          type='file'
         />
       </div>
 
       <div className='form-item'>
         <label>Banner Image</label>
         <input
-          value={newStore.store_banner_url}
           onChange={(e) =>
             setNewStore((prev) => ({
               ...prev,
-              store_banner_url: e.target.value,
+              store_banner_url: e.target.files[0],
             }))
           }
-          type='text'
+          accept='image/*'
+          type='file'
         />
       </div>
       <button className='primary-btn' type='submit'>

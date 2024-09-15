@@ -3,7 +3,6 @@ from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
 from app.models import db, Product, Store
 from ..aws import upload_file_to_s3, remove_file_from_s3, get_unique_filename, ALLOWED_EXTENSIONS
-from ..forms.image_form import ImageForm
 
 product_routes = Blueprint('products', __name__)
 
@@ -28,7 +27,6 @@ def create_prodcut():
     if not data.get("store_id"):
         errors["store_id"] = 'Must select a store'
 
-    print(data.to_dict(), '==========================')
     if errors:
         return jsonify(errors), 404
 

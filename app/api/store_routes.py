@@ -3,7 +3,7 @@ from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
 from app.models import Store, Product
 from app.models import db
-from ..aws import upload_file_to_s3, get_unique_filename
+from ..aws import upload_file_to_s3, remove_file_from_s3, get_unique_filename, ALLOWED_EXTENSIONS
 
 store_routes = Blueprint('stores', __name__)
 
@@ -15,29 +15,53 @@ def all_stores():
     return jsonify({'stores': [store.to_dict() for store in stores]}), 200
 
 # create a store
-@store_routes.route('/', methods=["POST"])
+@store_routes.route('', methods=["POST"])
 def create_store():
-    data = request.get_json()
+    data = request.form
     errors = {}
 
-    if not data["name"]:
+    if not data.get("name"):
         errors["name"] = 'Name is required'
-    if not data["type"]:
+    if not data.get("type"):
         errors["type"] = 'Type is required'
 
     if errors:
+        print(errors)
         return jsonify(errors), 404
+
+
+    if 'store_img_url' in request.files:
+        store_img_url = request.files['store_img_url']
+
+
+        if store_img_url.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
+            return jsonify({"errors": "File type not allowed"}), 400
+
+        store_img_url.filename = get_unique_filename(store_img_url.filename)
+
+
+        store_img_url_upload = upload_file_to_s3(store_img_url, acl="public-read")
+
+    if 'store_banner_url' in request.files:
+        store_banner_url = request.files['store_banner_url']
+
+
+        if store_banner_url.filename.rsplit('.', 1)[1].lower() not in ALLOWED_EXTENSIONS:
+            return jsonify({"errors": "File type not allowed"}), 400
+
+        store_banner_url.filename = get_unique_filename(store_banner_url.filename)
+
+
+        store_banner_url_upload = upload_file_to_s3(store_banner_url, acl="public-read")
+
     new_store = Store(
         owner_id=data.get('owner_id'),
-        name=data["name"],
-        type= data["type"],
-        description=data["description"]
+        name=data.get("name"),
+        type= data.get("type"),
+        description=data.get("description"),
+        store_img_url=store_img_url_upload['url'],
+        store_banner_url=store_banner_url_upload['url']
     )
-    img = data['store_img_url']
-    print(img, '==================================================')
-
-    #     store_img_url= data['store_img_url'],
-    #     store_banner_url= data['store_banner_url'],
 
     db.session.add(new_store)
     db.session.commit()
@@ -87,7 +111,7 @@ def get_products_by_store_id(storeId):
 @store_routes.route('/<int:storeId>', methods=['PUT'])
 def update_a_store(storeId):
     store = Store.query.get(storeId)
-    data = request.get_json()
+    data = request.form
 
     if not store:
         return jsonify({"errors": {
@@ -98,6 +122,16 @@ def update_a_store(storeId):
         return jsonify({"errors": {
             "store": "You dont own this store"
         }}), 304
+
+    if data.get('store_img_url').filename != store.store_img_url:
+        remove_file_from_s3(store.store_img_url)
+        store.store_img_url = get_unique_filename(data.get('store_img_url').filename)
+        upload_file_to_s3(store.store_img_url)
+
+    if data.get('store_banner_url').filename != store.store_banner_url:
+        remove_file_from_s3(store.store_banner_url)
+        store.store_banner_url = get_unique_filename(data.get('store_banner_url').filename)
+        upload_file_to_s3(store.store_banner_url)
 
     store.name = data.get('name', store.name)
     store.type = data.get('type', store.type)
@@ -118,6 +152,9 @@ def delete_store(storeId):
         return jsonify({"errors": {
             "Store": "Store does not exist"
         }}), 404
+
+    remove_file_from_s3(store.store_img_url)
+    remove_file_from_s3(store.store_banner_url)
 
     db.session.delete(store)
     db.session.commit()

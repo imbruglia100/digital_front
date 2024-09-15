@@ -58,7 +58,6 @@ const CreateAProductForm = () => {
       if (newProduct.product_img) {
         formData.append("image", newProduct.product_img);
       }
-      console.log(Array.from(formData.entries()))
       const addedProduct = await dispatch(addNewProduct(formData));
 
       if (addedProduct?.id) {
