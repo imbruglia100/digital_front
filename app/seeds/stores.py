@@ -1,4 +1,4 @@
-from app.models import db, Store, environment, SCHEMA
+from app.models import db, Store, StoreReview, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
@@ -59,7 +59,69 @@ def seed_stores():
         store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
     )
 
-    db.session.add_all([demos_store,bills_store,johns_store,demos_store2,bills_store2,johns_store2])
+    demo_review_1 = StoreReview(
+    store_id=1,
+    user_id=3,
+    title="Great Place to Explore!",
+    description="I love coming to Demo Store. It's a fantastic place to see a variety of items and test them out. The staff is super friendly and helpful!",
+    rating=4
+    )
+
+    demo_review_2 = StoreReview(
+        store_id=1,
+        user_id=2,
+        title="Excellent Experience",
+        description="I had a wonderful time shopping at Demo Store. The products are unique and well-presented. Will definitely return!",
+        rating=5
+    )
+
+    bills_review_1 = StoreReview(
+    store_id=2,
+    user_id=1,
+    title="Bill's Got It All!",
+    description="I can always find what I need at Bill's Store. From groceries to household items, they have a great selection!",
+    rating=5
+    )
+
+    bills_review_2 = StoreReview(
+        store_id=2,
+        user_id=3,
+        title="Friendly Service",
+        description="Every time I visit, the staff is so welcoming and eager to help. Bill's Store feels like home!",
+        rating=4
+    )
+
+    johns_review_1 = StoreReview(
+    store_id=3,
+    user_id=1,
+    title="Love This Store!",
+    description="John's Store is my go-to for everything. The selection is fantastic, and I always leave satisfied!",
+    rating=5
+    )
+
+    johns_review_2 = StoreReview(
+        store_id=3,
+        user_id=2,
+        title="Well Organized",
+        description="This store is very well organized. I can easily find what I'm looking for, and the staff is always on hand to assist.",
+        rating=5
+    )
+
+    db.session.add_all([
+        demos_store,
+        bills_store,
+        johns_store,
+        demos_store2,
+        bills_store2,
+        johns_store2,
+        demo_review_1,
+        demo_review_2,
+        bills_review_1,
+        bills_review_2,
+        johns_review_1,
+        johns_review_2
+        ])
+
 
     db.session.commit()
 

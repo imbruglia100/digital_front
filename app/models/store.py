@@ -15,6 +15,7 @@ class Store(db.Model):
     store_banner_url = db.Column(db.String(255))
 
     owner = db.relationship('User', back_populates='stores')
+    reviews = db.relationship('StoreReview', cascade="all, delete-orphan")
     products = db.relationship('Product', back_populates='store', cascade="all, delete-orphan")
 
     def to_dict(self):
