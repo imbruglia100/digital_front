@@ -23,6 +23,5 @@ class StoreReview(db.Model):
             'title': self.title,
             'description': self.description,
             'rating': self.rating,
-            'Store' : self.store.to_dict() if self.store else {},
             'User' : self.user.to_dict() if self.user else {}
         }

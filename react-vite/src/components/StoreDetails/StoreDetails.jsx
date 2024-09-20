@@ -1,6 +1,6 @@
 /** @format */
 
-import { useEffect } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import { clearSelected, getSelectedStore } from "../../redux/stores";
@@ -16,14 +16,19 @@ import { getProductsByStoreId } from "../../redux/products";
 const StoreDetails = ({ edit }) => {
   const { storeId } = useParams();
   const store = useSelector((state) => state.stores.selectedStore);
+  const [reviews, setReviews] = useState([])
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
   // const navigate = useNavigate()
   useEffect(() => {
     dispatch(clearSelected());
     dispatch(getSelectedStore(+storeId));
-    dispatch(getProductsByStoreId(+storeId))
+    dispatch(getProductsByStoreId(+storeId));
   }, [dispatch]);
+
+  useEffect(() => {
+    store?.Reviews && setReviews(Object.values(store?.Reviews))
+  }, [store]);
 
   // useEffect(() => {
   //   if(edit && user?.id !== store?.owner_id){
@@ -66,18 +71,27 @@ const StoreDetails = ({ edit }) => {
       <div className='store-detials-body'>
         <div>
           <h1>{store.name}</h1>
-          <a
-            style={{ color: "#A57C00", textDecoration: "none" }}
-            href='#reviews'
-          >
-            5.0 <FontAwesomeIcon icon={faStar} />
-          </a>
-        </div>
-        <div id="store-description">
-          {store.description}
-        </div>
-      </div>
+          <div>
+            <a
+              style={{ color: "#A57C00", textDecoration: "none" }}
+              href='#reviews'
+            >
+              5.0 <FontAwesomeIcon icon={faStar} />
+            </a>
+            {
+              user && store.id !== user.id && !reviews.find(ele => ele.user_id === user.id) &&
+                <a><span className="navlink">Create Review</span></a>
 
+            }
+          </div>
+        </div>
+        <div id='store-description'>{store.description}</div>
+      </div>
+        {reviews &&
+          reviews.map(ele => {
+          console.log(Object.keys(ele.User))
+          return <p>{ele.User.username}</p>
+          })}
       <ProductList />
     </div>
   );

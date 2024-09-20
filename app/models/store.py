@@ -27,5 +27,6 @@ class Store(db.Model):
             'description': self.description,
             'store_img_url': self.store_img_url,
             'store_banner_url': self.store_banner_url,
+            "Reviews": {review.id: review.to_dict() for review in self.reviews},
             'Owner': self.owner.to_dict()
         }
