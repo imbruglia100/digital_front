@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
-from app.models import Store, Product
+from app.models import Store, Product, StoreReview
 from app.models import db
 from ..aws import upload_file_to_s3, remove_file_from_s3, get_unique_filename, ALLOWED_EXTENSIONS
 
