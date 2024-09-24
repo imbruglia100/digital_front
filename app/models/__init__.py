@@ -4,3 +4,4 @@ from .db import environment, SCHEMA
 from .store import Store
 from .product import Product
 from .store_reviews import StoreReview
+from .product_reviews import ProductReview
