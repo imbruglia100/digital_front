@@ -14,6 +14,8 @@ class Product(db.Model):
     stock_amount = db.Column(db.String(255))
     product_img = db.Column(db.String(255))
 
+
+    reviews = db.relationship('ProductReview', cascade="all, delete-orphan")
     store = db.relationship('Store', back_populates='products')
 
     def to_dict(self):
@@ -25,5 +27,6 @@ class Product(db.Model):
             'price': self.price,
             'stock_amount': self.stock_amount,
             'product_img': self.product_img,
-            'Store' : self.store.to_dict() if self.store else {}
+            'Store' : self.store.to_dict() if self.store else {},
+            "Reviews": {review.id: review.to_dict() for review in self.reviews}
         }
