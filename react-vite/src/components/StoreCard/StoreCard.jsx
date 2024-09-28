@@ -5,11 +5,16 @@ import "./StoreCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 const StoreCard = ({ store }) => {
+  const totalRating = store.Reviews
+    ? Object.values(store.Reviews).reduce(
+        (accu, review) =>
+          accu + review.rating,
+        0
+      )
+    : 0;
+  const reviewLength = store.Reviews ? Object.values(store.Reviews).length : 0
   return (
-    <NavLink
-      to={`/stores/${store.id}`}
-      className='store-card-container'
-    >
+    <NavLink to={`/stores/${store.id}`} className='store-card-container'>
       <div className='store-img-container'>
         <div className='banner-container'>
           <img className='banner' src={store.store_banner_url} />
@@ -26,11 +31,15 @@ const StoreCard = ({ store }) => {
             style={{ color: "#A57C00", textDecoration: "none" }}
             href='#reviews'
           >
-            5.0 <FontAwesomeIcon icon={faStar} />
+            {
+              reviewLength > 0 ?
+                (totalRating/reviewLength).toFixed(1)
+                : 'No Reviews'
+            } <FontAwesomeIcon icon={faStar} />
           </p>
         </div>
         <div className='second-half-store-info'>
-          <p className="store-type">{store.type}</p>
+          <p className='store-type'>{store.type}</p>
           <p>35 Reviews</p>
         </div>
       </div>

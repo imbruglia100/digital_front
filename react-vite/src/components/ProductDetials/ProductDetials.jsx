@@ -1,6 +1,6 @@
 /** @format */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import "./ProductDetials.css";
@@ -14,6 +14,8 @@ import { getSelectedProduct, clearSelected } from "../../redux/products";
 const ProductDetials = ({ edit }) => {
   const { productId } = useParams();
   const product = useSelector((state) => state.products.selectedProduct);
+  const [reviews, setReviews] = useState([])
+  const [reviewAvg, setReviewAvg] = useState(0)
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
 
@@ -21,6 +23,15 @@ const ProductDetials = ({ edit }) => {
     dispatch(clearSelected());
     dispatch(getSelectedProduct(+productId));
   }, [dispatch]);
+
+  useEffect(() => {
+    setReviewAvg(0)
+    product.Reviews && setReviews(Object.values(product.Reviews))
+  }, [product]);
+
+  useEffect(() => {
+    reviews.length > 0 && setReviewAvg((reviews.reduce((acc, rev) => acc + rev.rating, 0)/reviews.length).toFixed(1))
+  }, [reviews]);
 
   return (
     <div id='product-details-container'>
@@ -38,7 +49,12 @@ const ProductDetials = ({ edit }) => {
           <h1>{product.title}</h1><span>{product.stock_amount} left</span>
           <h2>${product.price}</h2>
           <a style={{ color: "#A57C00", textDecoration: "none" }} href='#reviews'>
-            5.0 <FontAwesomeIcon icon={faStar} />
+            {
+              reviews.length !== 0 ?
+                reviewAvg
+                :
+                'No Reviews'
+            } <FontAwesomeIcon icon={faStar} />
           </a>
         </div>
         <div>

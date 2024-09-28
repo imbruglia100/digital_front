@@ -5,6 +5,12 @@ import "./ProductCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines, faStar } from "@fortawesome/free-solid-svg-icons";
 const ProductCard = ({ product }) => {
+  const reviewTotal = product.Reviews
+    ? Object.values(product.Reviews).reduce((acc, rev) => acc + rev.rating, 0)
+    : 0;
+  const reviewLength = product.Reviews
+    ? Object.values(product.Reviews).length
+    : 0;
   return product ? (
     <NavLink to={`/products/${product?.id}`} className='product-card-container'>
       <div className='product-img-container'>
@@ -41,16 +47,22 @@ const ProductCard = ({ product }) => {
           )}
         </div>
         <div className='first-half-product-info'>
-          <a style={{ color: "#2845c7" }}>
-            35 <FontAwesomeIcon icon={faFileLines} />
-          </a>
-          •
-          <a
-            style={{ color: "#A57C00", textDecoration: "none" }}
-            href='#reviews'
-          >
-            5.0 <FontAwesomeIcon icon={faStar} />
-          </a>
+          {reviewLength > 0 ? (
+            <>
+              <a style={{ color: "#2845c7" }}>
+                {reviewLength} <FontAwesomeIcon icon={faFileLines} />
+              </a>
+              •
+              <a
+                style={{ color: "#A57C00", textDecoration: "none" }}
+                href='#reviews'
+              >
+                {(reviewTotal/reviewLength).toFixed(1)} <FontAwesomeIcon icon={faStar} />
+              </a>
+            </>
+          ) : (
+            <p>No Reviews</p>
+          )}
         </div>
       </div>
     </NavLink>

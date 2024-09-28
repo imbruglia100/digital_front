@@ -16,6 +16,7 @@ import { getProductsByStoreId } from "../../redux/products";
 const StoreDetails = ({ edit }) => {
   const { storeId } = useParams();
   const store = useSelector((state) => state.stores.selectedStore);
+  const [reviewAverage, setReviewAverage] = useState(0)
   const [reviews, setReviews] = useState([])
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
@@ -27,8 +28,13 @@ const StoreDetails = ({ edit }) => {
   }, [dispatch]);
 
   useEffect(() => {
+    setReviewAverage(0)
     store?.Reviews && setReviews(Object.values(store?.Reviews))
   }, [store]);
+
+  useEffect(() => {
+    reviews.length > 0 && setReviewAverage( (reviews.reduce((acc, rev) => acc + rev.rating, 0)/reviews.length).toFixed(1))
+  }, [reviews]);
 
   // useEffect(() => {
   //   if(edit && user?.id !== store?.owner_id){
@@ -76,7 +82,7 @@ const StoreDetails = ({ edit }) => {
               style={{ color: "#A57C00", textDecoration: "none" }}
               href='#reviews'
             >
-              5.0 <FontAwesomeIcon icon={faStar} />
+              {reviewAverage !== 0 ? reviewAverage : 'No Reviews'} <FontAwesomeIcon icon={faStar} />
             </a>
             {
               user && store.id !== user.id && !reviews.find(ele => ele.user_id === user.id) &&
