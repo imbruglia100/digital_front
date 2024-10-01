@@ -36,6 +36,7 @@ button:user-invalid{
   border: none;
   text-decoration: none;
   text-align: center;
+  cursor: pointer;
 }
 
 .primary-btn:hover {

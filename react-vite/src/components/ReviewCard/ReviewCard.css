@@ -1,0 +1,26 @@
+.review-container {
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    margin: 30px 20px;
+}
+
+.review-container h2{
+    margin: 0;
+}
+
+.review-container .user-action-buttons > *{
+    margin: 0 5px;
+}
+
+#time {
+    color: var(--neutral-color);
+}
+
+.rating-container{
+    display: flex;
+}
+
+.rating-container > p{
+    margin:  4px;
+}

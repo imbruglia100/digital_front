@@ -12,15 +12,20 @@ import DeleteStoreModal from "./DeleteStoreModal";
 import { LoadingImage } from "../LoadingItems/LoadingImage";
 import ProductList from "../ProductList/ProductList";
 import { getProductsByStoreId } from "../../redux/products";
+import ReviewCard from "../ReviewCard/ReviewCard";
 
 const StoreDetails = ({ edit }) => {
   const { storeId } = useParams();
   const store = useSelector((state) => state.stores.selectedStore);
-  const [reviewAverage, setReviewAverage] = useState(0)
-  const [reviews, setReviews] = useState([])
+  const [reviewAverage, setReviewAverage] = useState(0);
+  const [reviews, setReviews] = useState([]);
+  const [tabFocus, setTabFocus] = useState("products");
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
-  // const navigate = useNavigate()
+
+  const handleChangeTab = (type) => {
+    setTabFocus(type);
+  };
   useEffect(() => {
     dispatch(clearSelected());
     dispatch(getSelectedStore(+storeId));
@@ -28,19 +33,18 @@ const StoreDetails = ({ edit }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    setReviewAverage(0)
-    store?.Reviews && setReviews(Object.values(store?.Reviews))
+    setReviewAverage(0);
+    store?.Reviews && setReviews(Object.values(store?.Reviews));
   }, [store]);
 
   useEffect(() => {
-    reviews.length > 0 && setReviewAverage( (reviews.reduce((acc, rev) => acc + rev.rating, 0)/reviews.length).toFixed(1))
+    reviews.length > 0 &&
+      setReviewAverage(
+        (
+          reviews.reduce((acc, rev) => acc + rev.rating, 0) / reviews.length
+        ).toFixed(1)
+      );
   }, [reviews]);
-
-  // useEffect(() => {
-  //   if(edit && user?.id !== store?.owner_id){
-  //     navigate(`/stores/${storeId}`)
-  //   }
-  // }, [store, user])
 
   return (
     <div id='store-details-container'>
@@ -82,23 +86,43 @@ const StoreDetails = ({ edit }) => {
               style={{ color: "#A57C00", textDecoration: "none" }}
               href='#reviews'
             >
-              {reviewAverage !== 0 ? reviewAverage : 'No Reviews'} <FontAwesomeIcon icon={faStar} />
+              {reviewAverage !== 0 ? reviewAverage : "No Reviews"}{" "}
+              <FontAwesomeIcon icon={faStar} />
             </a>
-            {
-              user && store.id !== user.id && !reviews.find(ele => ele.user_id === user.id) &&
-                <a><span className="navlink">Create Review</span></a>
-
-            }
+            {user &&
+              store.id !== user.id &&
+              !reviews.find((ele) => ele.user_id === user.id) && (
+                <a>
+                  <span className='navlink'>Create Review</span>
+                </a>
+              )}
           </div>
         </div>
         <div id='store-description'>{store.description}</div>
       </div>
-        {reviews &&
-          reviews.map(ele => {
-          console.log(Object.keys(ele.User))
-          return <p>{ele.User.username}</p>
-          })}
-      <ProductList />
+      <div className='tabs-container'>
+        <p onClick={() => setTabFocus("products")}>Products</p>•
+        <p onClick={() => setTabFocus("reviews")}>Reviews</p>
+      </div>
+      {tabFocus === "products" && <ProductList />}
+
+      {tabFocus === "reviews" ? (
+        reviews ? (
+          <>
+            {user &&
+              reviews.filter((ele) => ele.User.id === user.id).length === 0 && (
+                <button className="primary-btn">Create a Review</button>
+              )}
+            {reviews.map((ele) => {
+              return <ReviewCard review={ele} />;
+            })}
+          </>
+        ) : (
+          <h1>No reviews found</h1>
+        )
+      ) : (
+        ""
+      )}
     </div>
   );
 };

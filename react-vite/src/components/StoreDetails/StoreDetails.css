@@ -51,7 +51,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--neutral-color);
     padding-bottom: 25px;
     margin-bottom: 25px;
 }
@@ -61,4 +60,19 @@
     padding: 4px 9px;
     border-radius: 4px;
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+/* border-bottom: 1px solid var(--neutral-color); */
+
+
+.tabs-container {
+    display: flex;
+    border-bottom: 1px solid var(--neutral-color);
+    justify-content: center;
+    align-items: center;
+}
+
+.tabs-container > p {
+    margin: 5px;
+    font-size: 18px;
+    cursor: pointer;
 }
