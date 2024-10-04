@@ -4,6 +4,7 @@ const SET_STORES = "stores/setStores";
 const SELECT_STORE = "stores/setSelectedStore";
 const ADD_STORE = "stores/addStore";
 const ADD_REVIEW = "stores/addReview";
+const REMOVE_REVIEW = "stores/removeReview";
 const CLEAR_SELECTED = "stores/clearSelected";
 const REMOVE_STORE = "stores/removeStore";
 
@@ -20,6 +21,11 @@ const addStore = (payload) => ({
 const addStoreReview = (payload) => ({
   type: ADD_REVIEW,
   payload, //review
+});
+
+const removeReview = (payload) => ({
+  type: REMOVE_REVIEW,
+  payload, //review id
 });
 
 const selectStore = (payload) => ({
@@ -114,6 +120,35 @@ export const addNewStoreReview = (review) => async (dispatch) => {
   }
 };
 
+export const updateStoreReview = (review) => async (dispatch) => {
+  const res = await fetch(`/api/stores/reviews/${+review.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(review),
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+
+    if (data.errors) {
+      return { ...data.errors };
+    }
+
+    dispatch(addStoreReview(data));
+    return data;
+  }
+};
+
+export const deleteStoreReview = (reviewId) => async (dispatch) => {
+  const res = await fetch(`/api/stores/reviews/${+reviewId}`, {
+    method: "DELETE",
+  });
+
+  if (res.ok) {
+    dispatch(removeReview(+reviewId));
+  }
+};
+
 export const editAStore = (store) => async (dispatch) => {
   const res = await fetch(`/api/stores/${+store?.id}`, {
     method: "PUT",
@@ -176,6 +211,9 @@ function storesReducer(state = initialState, action) {
           },
         },
       };
+    case REMOVE_REVIEW:
+      delete state.selectedStore.Reviews[action.payload];
+      return state;
     case CLEAR_SELECTED:
       return { ...state, selectedStore: {} };
     case REMOVE_STORE:

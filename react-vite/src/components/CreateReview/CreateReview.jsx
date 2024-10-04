@@ -4,22 +4,45 @@ import { useState } from "react";
 import "./CreateReview.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
-import { addNewStoreReview } from "../../redux/stores";
+import { useDispatch } from "react-redux";
+import { addNewStoreReview, updateStoreReview } from "../../redux/stores";
 import { useModal } from "../../context/Modal";
-const CreateReview = ({ store_id }) => {
+const CreateReview = ({ store_id, review }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [formData, setFormData] = useState({
+    ...review,
     store_id: store_id,
-    title: "",
-    rating: 1,
-    description: "",
+    title: review?.title || "",
+    rating: review?.rating || 1,
+    description: review?.description || "",
   });
 
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = async (e) => {
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    setErrors({});
+    const tempErrors = {};
+    formData;
+    if (!formData.title) {
+      tempErrors.title = "Must have a title";
+    }
+
+    if (!formData.description) {
+      tempErrors.description = "Must have a description";
+    }
+
+    if (Object.keys(tempErrors).length === 0) {
+      await dispatch(addNewStoreReview(formData));
+      closeModal();
+      return;
+    }
+
+    setErrors(errors);
+  };
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
     setErrors({});
     const tempErrors = {};
@@ -33,7 +56,7 @@ const CreateReview = ({ store_id }) => {
     }
     console.log(tempErrors);
     if (Object.keys(tempErrors).length === 0) {
-      await dispatch(addNewStoreReview(formData));
+      await dispatch(updateStoreReview(formData));
       closeModal();
       return;
     }
@@ -42,8 +65,8 @@ const CreateReview = ({ store_id }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Create a review</h1>
+    <form>
+      <h1>{review ? 'Update your Review' : 'Create a review'}</h1>
       <div className='form-item'>
         <label>
           Title <span className='required'>*</span>
@@ -86,8 +109,8 @@ const CreateReview = ({ store_id }) => {
         />
       </div>
 
-      <button onClick={handleSubmit} className='primary-btn'>
-        Create
+      <button onClick={review ? handleUpdate : handleCreate} className='primary-btn'>
+        {review ? 'Update': "Create"}
       </button>
     </form>
   );

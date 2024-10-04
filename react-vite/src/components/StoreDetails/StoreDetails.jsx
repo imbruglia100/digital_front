@@ -23,10 +23,7 @@ const StoreDetails = ({ edit }) => {
   const [tabFocus, setTabFocus] = useState("products");
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
-
-  const handleChangeTab = (type) => {
-    setTabFocus(type);
-  };
+  
   useEffect(() => {
     dispatch(clearSelected());
     dispatch(getSelectedStore(+storeId));
