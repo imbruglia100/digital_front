@@ -23,7 +23,7 @@ const StoreDetails = ({ edit }) => {
   const [tabFocus, setTabFocus] = useState("products");
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(clearSelected());
     dispatch(getSelectedStore(+storeId));
@@ -80,20 +80,13 @@ const StoreDetails = ({ edit }) => {
         <div>
           <h1>{store.name}</h1>
           <div>
-            <a
-              style={{ color: "#A57C00", textDecoration: "none" }}
-              href='#reviews'
+            <div
+              style={{ color: "#A57C00", textDecoration: "none", cursor:'pointer', width:'fit-content' }}
+              onClick={() => setTabFocus('reviews')}
             >
-              {reviewAverage !== 0 ? reviewAverage : "No Reviews"}{" "}
+              {reviewAverage !== 0 ? reviewAverage : "New"}{" "}
               <FontAwesomeIcon icon={faStar} />
-            </a>
-            {user &&
-              store.id !== user.id &&
-              !reviews.find((ele) => ele.user_id === user.id) && (
-                <a>
-                  <span className='navlink'>Create Review</span>
-                </a>
-              )}
+            </div>
           </div>
         </div>
         <div id='store-description'>{store.description}</div>

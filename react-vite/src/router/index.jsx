@@ -13,6 +13,8 @@ import ProductDetials from '../components/ProductDetials';
 import UserProductsList from '../components/UserProductsList';
 import CreateAProductForm from '../components/CreateAProduct';
 import EditAProduct from '../components/EditAProduct';
+import About from '../components/Contact';
+import Contact from '../components/Contact';
 
 export const router = createBrowserRouter([
   {
@@ -76,7 +78,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/contact",
-        element: <h1>Contact</h1>,
+        element: <Contact />,
       },
       {
         path: "login",

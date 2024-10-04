@@ -69,7 +69,7 @@ const CreateReview = ({ store_id, review }) => {
       <h1>{review ? 'Update your Review' : 'Create a review'}</h1>
       <div className='form-item'>
         <label>
-          Title <span className='required'>*</span>
+          Title<span className='required'>*</span>
         </label>
         <input
           value={formData.title}
@@ -83,7 +83,7 @@ const CreateReview = ({ store_id, review }) => {
 
       <div className='form-item'>
         <label>
-          Rating <span className='required'>*</span>
+          Rating<span className='required'>*</span>
         </label>
         <div className='stars-container'>
           {[1, 2, 3, 4, 5].map((ele) => (
@@ -98,7 +98,7 @@ const CreateReview = ({ store_id, review }) => {
 
       <div className='form-item'>
         <label>
-          Description <span className='required'>*</span>
+          Description<span className='required'>*</span>
         </label>
         <textarea
           onChange={(e) =>

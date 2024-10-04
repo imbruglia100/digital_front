@@ -34,13 +34,13 @@ const StoreCard = ({ store }) => {
             {
               reviewLength > 0 ?
                 (totalRating/reviewLength).toFixed(1)
-                : 'No Reviews'
+                : 'New'
             } <FontAwesomeIcon icon={faStar} />
           </p>
         </div>
         <div className='second-half-store-info'>
           <p className='store-type'>{store.type}</p>
-          <p>35 Reviews</p>
+          <p>{reviewLength} Reviews</p>
         </div>
       </div>
     </NavLink>
