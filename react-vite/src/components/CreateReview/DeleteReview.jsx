@@ -1,16 +1,20 @@
 import { useDispatch } from "react-redux"
 import { deleteStoreReview, getSelectedStore } from "../../redux/stores"
 import { useModal } from "../../context/Modal"
-import { useEffect } from "react"
+import { deleteProductReview, getSelectedProduct } from "../../redux/products"
 
-const DeleteReview = ({review}) => {
+const DeleteReview = ({review, product}) => {
     const dispatch = useDispatch()
     const { closeModal } = useModal()
     const handleDelete = async (e) => {
         e.preventDefault()
-
-        await dispatch(deleteStoreReview(+review.id))
-        await dispatch(getSelectedStore(+review.store_id));
+        if(product){
+            await dispatch(deleteProductReview(+review.id))
+            await dispatch(getSelectedProduct(+review.product_id))
+        }else{
+            await dispatch(deleteStoreReview(+review.id))
+            await dispatch(getSelectedStore(+review.store_id));
+        }
         closeModal()
     }
 

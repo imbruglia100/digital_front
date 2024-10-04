@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from sqlalchemy.orm import joinedload
 from flask_login import login_required, current_user
-from app.models import db, Product, Store
+from app.models import db, Product, Store, ProductReview
 from ..aws import upload_file_to_s3, remove_file_from_s3, get_unique_filename, ALLOWED_EXTENSIONS
 
 product_routes = Blueprint('products', __name__)
@@ -72,6 +72,73 @@ def get_all_current_products():
     products = Product.query.filter(Product.store_id.in_(store_ids)).all()
     return jsonify({'products': [product.to_dict() for product in products]}), 200
 
+#creates a review for the store
+@product_routes.route('/reviews', methods=["POST"])
+def create_review():
+    data = request.get_json()
+    errors = {}
+
+    if not data.get("title"):
+        errors["title"] = 'Title is required'
+    if not data.get("description"):
+        errors["description"] = 'Description is required'
+
+    if errors:
+
+        return jsonify(errors), 404
+
+    new_review = ProductReview(
+        product_id=data.get('product_id'),
+        user_id=current_user.id,
+        title=data.get('title'),
+        description=data.get('description'),
+        rating=data.get('rating')
+    )
+
+    db.session.add(new_review)
+    db.session.commit()
+
+    return jsonify(new_review.to_dict()), 201
+
+#edit a review
+@product_routes.route('/reviews/<int:review_id>', methods=["PUT"])
+def edit_review(review_id):
+    review = ProductReview.query.filter_by(id=review_id).first()
+    data = request.get_json()
+
+    if not review:
+        return jsonify({"error":{
+            "review": "Review does not exist"
+        }}),404
+
+    review.title = data.get('title', review.title)
+    review.description = data.get('description', review.description)
+    review.rating = data.get('rating', review.rating)
+
+    db.session.commit()
+
+    return jsonify(review.to_dict()), 201
+
+#delete a review
+@product_routes.route('/reviews/<int:review_id>', methods=["DELETE"])
+def delete_review(review_id):
+    review = ProductReview.query.filter_by(id=review_id).first()
+
+    if not review:
+        return jsonify({"error":{
+            "review": "Review does not exist"
+        }}),404
+
+    if review.user_id != current_user.id:
+        return jsonify({"error":{
+            "review": "You do not own this review"
+        }}),404
+
+    db.session.delete(review)
+    db.session.commit()
+
+    return jsonify({"message": "Successfully deleted."}), 200
+
 # get a specific product by productId
 @product_routes.route('/<int:productId>')
 def get_specific_product(productId):
@@ -129,7 +196,7 @@ def delete_product(productId):
         return jsonify({"errors": {
             "product": "You don't own the product"
         }}), 404
-    
+
     if product.product_img:
         remove_file_from_s3(product.product_img)
 

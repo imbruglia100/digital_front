@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import CreateReview from "../CreateReview/CreateReview";
 import DeleteReview from "../CreateReview/DeleteReview";
-const ReviewCard = ({ review }) => {
+const ReviewCard = ({ review, product }) => {
   const user = useSelector((state) => state.session.user);
 
   return (
@@ -25,13 +25,15 @@ const ReviewCard = ({ review }) => {
           <OpenModalMenuItem
             itemText='Edit'
             modalComponent={
+              product ?
+              <CreateReview product_id={review.product_id} review={review} />:
               <CreateReview store_id={review.store_id} review={review} />
             }
             className='primary-btn'
           />
           <OpenModalMenuItem
             itemText='Delete'
-            modalComponent={<DeleteReview review={review} />}
+            modalComponent={<DeleteReview review={review} product={product} />}
             className='delete-btn primary-btn'
           />
         </div>

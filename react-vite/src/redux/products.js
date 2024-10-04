@@ -3,6 +3,8 @@
 const SET_PRODUCTS = "products/setProducts";
 const SELECT_PRODUCT = "products/setSelectedProduct";
 const ADD_PRODUCT = "products/addProduct";
+const ADD_REVIEW = "products/addReview";
+const REMOVE_REVIEW = "products/removeReview";
 const CLEAR_SELECTED = "products/clearSelected";
 const REMOVE_PRODUCT = "products/removeProduct";
 
@@ -14,6 +16,16 @@ const setProducts = (payload) => ({
 const addProduct = (payload) => ({
   type: ADD_PRODUCT,
   payload, //new product
+});
+
+const addProductReview = (payload) => ({
+  type: ADD_REVIEW,
+  payload, //new review
+});
+
+const removeProductReview = (payload) => ({
+  type: ADD_PRODUCT,
+  payload, //review id
 });
 
 const selectProduct = (payload) => ({
@@ -82,6 +94,54 @@ export const getSelectedProduct = (id) => async (dispatch) => {
     }
 
     dispatch(selectProduct({ ...data }));
+  }
+};
+
+export const addNewProductReview = (review) => async (dispatch) => {
+  const res = await fetch("/api/products/reviews", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(review),
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+
+    if (data.errors) {
+      return { ...data.errors };
+    }
+
+    dispatch(addProductReview(data));
+    return data;
+  }
+};
+
+export const updateProductReview = (review) => async (dispatch) => {
+  const res = await fetch(`/api/products/reviews/${+review.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(review),
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+
+    if (data.errors) {
+      return { ...data.errors };
+    }
+
+    dispatch(addProductReview(data));
+    return data;
+  }
+};
+
+export const deleteProductReview = (reviewId) => async (dispatch) => {
+  const res = await fetch(`/api/products/reviews/${+reviewId}`, {
+    method: "DELETE",
+  });
+
+  if (res.ok) {
+    dispatch(removeProductReview(+reviewId));
   }
 };
 
@@ -156,6 +216,20 @@ function productsReducer(state = initialState, action) {
       };
     case CLEAR_SELECTED:
       return { ...state, selectedProduct: {} };
+    case ADD_REVIEW:
+      return {
+        ...state,
+        selectedProduct: {
+          ...state.selectedProduct,
+          Reviews: {
+            ...state.selectedProduct.Reviews,
+            [action.payload.id]: action.payload,
+          },
+        },
+      };
+    case REMOVE_REVIEW:
+      delete state.selectedProduct.Reviews[action.payload];
+      return state;
     case REMOVE_PRODUCT:
       const newProducts = { ...state.allProducts };
       delete newProducts[action.payload];

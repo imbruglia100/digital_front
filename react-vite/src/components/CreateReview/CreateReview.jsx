@@ -7,12 +7,15 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { addNewStoreReview, updateStoreReview } from "../../redux/stores";
 import { useModal } from "../../context/Modal";
-const CreateReview = ({ store_id, review }) => {
+import { addNewProductReview, updateProductReview } from "../../redux/products";
+
+const CreateReview = ({product_id, store_id, review }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [formData, setFormData] = useState({
     ...review,
-    store_id: store_id,
+    product_id: product_id || '',
+    store_id: store_id || '',
     title: review?.title || "",
     rating: review?.rating || 1,
     description: review?.description || "",
@@ -32,11 +35,18 @@ const CreateReview = ({ store_id, review }) => {
     if (!formData.description) {
       tempErrors.description = "Must have a description";
     }
-
-    if (Object.keys(tempErrors).length === 0) {
-      await dispatch(addNewStoreReview(formData));
-      closeModal();
-      return;
+    if (store_id){
+      if (Object.keys(tempErrors).length === 0) {
+        await dispatch(addNewStoreReview(formData));
+        closeModal();
+        return;
+      }
+    }else{
+      if (Object.keys(tempErrors).length === 0) {
+        await dispatch(addNewProductReview(formData));
+        closeModal();
+        return;
+      }
     }
 
     setErrors(errors);
@@ -54,11 +64,20 @@ const CreateReview = ({ store_id, review }) => {
     if (!formData.description) {
       tempErrors.description = "Must have a description";
     }
-    console.log(tempErrors);
-    if (Object.keys(tempErrors).length === 0) {
-      await dispatch(updateStoreReview(formData));
-      closeModal();
-      return;
+
+    if(product_id){
+      if (Object.keys(tempErrors).length === 0) {
+        await dispatch(updateProductReview(formData));
+        closeModal();
+        return;
+      }
+    }else{
+      if (Object.keys(tempErrors).length === 0) {
+        await dispatch(updateStoreReview(formData));
+        closeModal();
+        return;
+      }
+
     }
 
     setErrors(errors);
