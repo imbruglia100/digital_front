@@ -98,7 +98,8 @@ export const addNewStore = (newStore) => async (dispatch) => {
 export const addNewStoreReview = (review) => async (dispatch) => {
   const res = await fetch("/api/stores/reviews", {
     method: "POST",
-    body: review,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(review),
   });
 
   if (res.ok) {

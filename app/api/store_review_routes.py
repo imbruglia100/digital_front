@@ -9,7 +9,7 @@ store_review_routes = Blueprint('store_reviews', __name__)
 #creates a review for the store
 @store_review_routes.route('', methods=["POST"])
 def create_review():
-    data = request.form
+    data = request.get_json()
     errors = {}
 
     if not data.get("title"):

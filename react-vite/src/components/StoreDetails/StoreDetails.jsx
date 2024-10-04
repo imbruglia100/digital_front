@@ -131,7 +131,7 @@ const StoreDetails = ({ edit }) => {
               user.id !== store.owner_id ?
                 <OpenModalMenuItem
                     className='primary-btn create-review-btn'
-                    modalComponent={<CreateReview />}
+                    modalComponent={<CreateReview  store_id={store.id}/>}
                     itemText='Create A Review'
                     /> :
                     <h1> No Reviews Found</h1>
