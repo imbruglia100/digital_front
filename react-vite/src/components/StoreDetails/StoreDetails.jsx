@@ -13,6 +13,7 @@ import { LoadingImage } from "../LoadingItems/LoadingImage";
 import ProductList from "../ProductList/ProductList";
 import { getProductsByStoreId } from "../../redux/products";
 import ReviewCard from "../ReviewCard/ReviewCard";
+import CreateReview from "../CreateReview/CreateReview";
 
 const StoreDetails = ({ edit }) => {
   const { storeId } = useParams();
@@ -101,24 +102,41 @@ const StoreDetails = ({ edit }) => {
         <div id='store-description'>{store.description}</div>
       </div>
       <div className='tabs-container'>
-        <p onClick={() => setTabFocus("products")}>Products</p>•
-        <p onClick={() => setTabFocus("reviews")}>Reviews</p>
+        <p className={tabFocus === 'products' ? 'active' : ''} onClick={() => setTabFocus("products")}>Products</p>•
+        <p className={tabFocus === 'reviews' ? 'active' : ''} onClick={() => setTabFocus("reviews")}>Reviews</p>
       </div>
       {tabFocus === "products" && <ProductList />}
 
       {tabFocus === "reviews" ? (
-        reviews ? (
+        reviews.length > 0 ? (
           <>
             {user &&
+              user.id !== store.owner_id &&
               reviews.filter((ele) => ele.User.id === user.id).length === 0 && (
-                <button className="primary-btn">Create a Review</button>
+                <div className='center-container'>
+                  <OpenModalMenuItem
+                  className='primary-btn create-review-btn'
+                  modalComponent={<CreateReview store_id={store.id} />}
+                  itemText='Create A Review'
+                  />
+                </div>
               )}
             {reviews.map((ele) => {
               return <ReviewCard review={ele} />;
             })}
           </>
         ) : (
-          <h1>No reviews found</h1>
+          <div className='center-container'>
+            {user &&
+              user.id !== store.owner_id ?
+                <OpenModalMenuItem
+                    className='primary-btn create-review-btn'
+                    modalComponent={<CreateReview />}
+                    itemText='Create A Review'
+                    /> :
+                    <h1> No Reviews Found</h1>
+                    }
+          </div>
         )
       ) : (
         ""

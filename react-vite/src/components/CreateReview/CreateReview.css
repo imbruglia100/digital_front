@@ -1,0 +1,17 @@
+form {
+    padding: 15px;
+}
+
+.star{
+    color: var(--neutral-color);
+    transition: all 120ms linear;
+}
+
+.star:hover{
+    color: gold;
+    cursor: pointer;
+}
+
+.star.active{
+    color: gold;
+}
