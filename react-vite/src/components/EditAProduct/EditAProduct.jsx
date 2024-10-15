@@ -140,7 +140,7 @@ const EditAProduct = () => {
       <div className='form-item'>
         <label>Product Image</label>
         <input
-          value={updatedProduct.product_img.filename}
+          value={updatedProduct.product_img.name}
           onChange={(e) =>
             setUpdatedProduct((prev) => ({
               ...prev,
