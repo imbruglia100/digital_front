@@ -163,21 +163,22 @@ export const addNewProduct = (newProduct) => async (dispatch) => {
   }
 };
 
-export const editAProduct = (product) => async (dispatch) => {
-  const res = await fetch(`/api/products/${+product?.id}`, {
+export const editAProduct = (productData) => async (dispatch) => {
+  const productId = productData.get('id');
+
+  const res = await fetch(`/api/products/${productId}`, {
     method: "PUT",
-    body: product,
+    body: productData,
   });
 
+  const data = await res.json();
+
   if (res.ok) {
-    const data = await res.json();
-
-    if (data.errors) {
-      return { ...data.errors };
-    }
-
     dispatch(addProduct(data));
     return data;
+  } else {
+    console.error('Error response:', data);
+    return { errors: data.errors || { _error: 'Failed to update product' } };
   }
 };
 

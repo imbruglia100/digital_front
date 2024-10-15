@@ -153,34 +153,44 @@ def get_specific_product(productId):
 
 # update a product
 @product_routes.route('/<int:productId>', methods=['PUT'])
+@login_required
 def update_a_product(productId):
     product = Product.query.get(productId)
-    store = Store.query.get(product.store_id)
-    data = request.form
 
     if not product:
-        return jsonify({"errors": {
-            "product": "Product does not exist"
-        }}), 404
+        return jsonify({"errors": {"product": "Product does not exist"}}), 404
 
-    if not store.owner_id == current_user.id:
-        return jsonify({"errors": {
-            "product": "You don't own this product"
-        }}), 304
+    if product.store.owner_id != current_user.id:
+        return jsonify({"errors": {"product": "You don't own this product's store"}}), 403
 
-    if data.get('product_img').filename != product.product_img:
-        remove_file_from_s3(product.product_img)
-        product.product_img = get_unique_filename(data.get('product_img').filename)
-        upload_file_to_s3(product.product_img)
+    data = request.form
+    files = request.files
 
-    product.title = data.get('title', product.title)
-    product.description = data.get('description', product.description)
-    product.price = data.get('price', product.price)
-    product.stock_amount = data.get('stock_amount', product.stock_amount)
+    if 'title' in data:
+        product.title = data['title']
+    if 'description' in data:
+        product.description = data['description']
+    if 'price' in data:
+        product.price = float(data['price'])
+    if 'stock_amount' in data:
+        product.stock_amount = int(data['stock_amount'])
+
+    # Handle product_img
+    if 'product_img' in files:
+        image = files["product_img"]
+        if image.filename != '':
+            image.filename = get_unique_filename(image.filename)
+            upload = upload_file_to_s3(image)
+
+            if "url" not in upload:
+                return upload, 400
+
+            product.product_img = upload["url"]
+    elif 'product_img' in data:
+        product.product_img = data['product_img']
 
     db.session.commit()
-
-    return jsonify(product.to_dict()), 201
+    return jsonify(product.to_dict()), 200
 
 # delete a product
 @product_routes.route('/<int:productId>', methods=['DELETE'])

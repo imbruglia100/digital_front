@@ -1,10 +1,10 @@
 /** @format */
 
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import "./EditAProduct.css";
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { editAProduct } from "../../redux/products";
 import { getUserStores } from "../../redux/stores";
 
@@ -14,44 +14,60 @@ const EditAProduct = () => {
   const userStores = useSelector((state) => state.stores.allStores);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [updatedProduct, setUpdatedProduct] = useState({
-    id: product.id,
-    store_id: product.store_id,
-    title: product.title || "",
-    description: product.description || "",
-    price: product.price || 0.0,
-    product_img: product.product_img || "",
-    stock_amount: product.stock_amount || 0,
+    id: product?.id,
+    store_id: product?.store_id,
+    title: product?.title || "",
+    description: product?.description || "",
+    price: product?.price || 0,
+    product_img: product?.product_img || "",
+    stock_amount: product?.stock_amount || 0,
   });
 
   const [productImgFile, setProductImgFile] = useState(null);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
-    setUpdatedProduct({ ...product });
+    if (product) {
+      setUpdatedProduct(product);
+    }
   }, [product]);
 
   useEffect(() => {
     dispatch(getUserStores());
   }, [dispatch]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedProduct(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    setProductImgFile(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
+
     Object.keys(updatedProduct).forEach(key => {
       formData.append(key, updatedProduct[key]);
     });
 
     if (productImgFile) {
       formData.append("product_img", productImgFile);
+    } else if (updatedProduct.product_img) {
+      formData.append("product_img", updatedProduct.product_img);
     }
 
-    const addedProduct = await dispatch(editAProduct(formData));
+    console.log('Submitting form data:', Object.fromEntries(formData));
 
-    if (!addedProduct?.errors) {
-      navigate(`/products/${product?.id}`);
+    const response = await dispatch(editAProduct(formData));
+    if (response.errors) {
+      console.error('Error updating product:', response.errors);
+    } else {
+      navigate(`/products/${updatedProduct.id}`);
     }
   };
 
@@ -63,9 +79,7 @@ const EditAProduct = () => {
         <label>Title</label>
         <input
           value={updatedProduct.title}
-          onChange={(e) =>
-            setUpdatedProduct((prev) => ({ ...prev, title: e.target.value }))
-          }
+          onChange={handleChange}
           required
           type='text'
         />
@@ -75,13 +89,9 @@ const EditAProduct = () => {
         <label>Description</label>
         <textarea
           value={updatedProduct.description}
+          onChange={handleChange}
           required
-          onChange={(e) =>
-            setUpdatedProduct((prev) => ({
-              ...prev,
-              description: e.target.value,
-            }))
-          }
+          type='text'
         />
       </div>
 
@@ -89,18 +99,7 @@ const EditAProduct = () => {
         <label>Price</label>
         <input
           value={`$${updatedProduct.price}`}
-          onChange={(e) => {
-            if (
-              !e.target.value
-                .toLowerCase()
-                .includes("abcdefghijklmnopqrstuvwxyz".split(""))
-            ) {
-              setUpdatedProduct((prev) => ({
-                ...prev,
-                price: e.target.value.split("$")[1] || "",
-              }));
-            }
-          }}
+          onChange={handleChange}
           required
           type='text'
         />
@@ -110,15 +109,8 @@ const EditAProduct = () => {
         <label>Stock Amount</label>
         <input
           value={updatedProduct.stock_amount}
+          onChange={handleChange}
           required
-          onChange={(e) => {
-            if (e.target.value >= 0) {
-              setUpdatedProduct((prev) => ({
-                ...prev,
-                stock_amount: e.target.value,
-              }));
-            }
-          }}
           type='number'
         />
       </div>
@@ -144,7 +136,7 @@ const EditAProduct = () => {
         <input
           type='file'
           accept='image/*'
-          onChange={(e) => setProductImgFile(e.target.files[0])}
+          onChange={handleFileChange}
         />
       </div>
       <button className='primary-btn' type='submit'>

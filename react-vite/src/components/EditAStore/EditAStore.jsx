@@ -51,7 +51,7 @@ const EditAStore = () => {
     if (storeBannerFile) {
       formData.append("store_banner_url", storeBannerFile);
     }
-
+    console.log('Submitting form data:', Object.fromEntries(formData));
     await dispatch(editAStore(formData));
     navigate(`/stores/${storeId}`);
   };
