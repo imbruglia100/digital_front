@@ -178,39 +178,57 @@ def get_products_by_store_id(storeId):
 
 # update a store
 @store_routes.route('/<int:storeId>', methods=['PUT'])
+@login_required
 def update_a_store(storeId):
     store = Store.query.get(storeId)
-    data = request.form
 
     if not store:
-        return jsonify({"errors": {
-            "store": "Store does not exist"
-        }}), 404
+        return jsonify({"errors": {"store": "Store does not exist"}}), 404
 
-    if not store.to_dict()["owner_id"] == current_user.id:
-        return jsonify({"errors": {
-            "store": "You dont own this store"
-        }}), 304
+    if store.owner_id != current_user.id:
+        return jsonify({"errors": {"store": "You don't own this store"}}), 403
 
-    if data.get('store_img_url').filename != store.store_img_url:
-        remove_file_from_s3(store.store_img_url)
-        store.store_img_url = get_unique_filename(data.get('store_img_url').filename)
-        upload_file_to_s3(store.store_img_url)
+    data = request.form
 
-    if data.get('store_banner_url').filename != store.store_banner_url:
-        remove_file_from_s3(store.store_banner_url)
-        store.store_banner_url = get_unique_filename(data.get('store_banner_url').filename)
-        upload_file_to_s3(store.store_banner_url)
+    try:
+        store.name = data.get('name', store.name)
+        store.type = data.get('type', store.type)
+        store.description = data.get('description', store.description)
 
-    store.name = data.get('name', store.name)
-    store.type = data.get('type', store.type)
-    store.description = data.get('description', store.description)
-    store.store_img_url = data.get('store_img_url', store.store_img_url)
-    store.store_banner_url = data.get('store_banner_url', store.store_banner_url)
+        # Handle store_img_url
+        if 'store_img_url' in request.files:
+            image = request.files["store_img_url"]
+            if image.filename != '':
+                image.filename = get_unique_filename(image.filename)
+                upload = upload_file_to_s3(image)
 
-    db.session.commit()
+                if "url" not in upload:
+                    return upload, 400
 
-    return jsonify(store.to_dict()), 201
+                store.store_img_url = upload["url"]
+        elif 'store_img_url' in data:
+            store.store_img_url = data['store_img_url']
+
+        # Handle store_banner_url
+        if 'store_banner_url' in request.files:
+            banner = request.files["store_banner_url"]
+            if banner.filename != '':
+                banner.filename = get_unique_filename(banner.filename)
+                upload = upload_file_to_s3(banner)
+
+                if "url" not in upload:
+                    return upload, 400
+
+                store.store_banner_url = upload["url"]
+        elif 'store_banner_url' in data:
+            store.store_banner_url = data['store_banner_url']
+
+        db.session.commit()
+        return jsonify(store.to_dict()), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"errors": {"server": str(e)}}), 500
 
 # delete a store
 @store_routes.route('/<int:storeId>', methods=['DELETE'])
