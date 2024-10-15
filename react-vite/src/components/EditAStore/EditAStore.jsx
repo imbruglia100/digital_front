@@ -18,9 +18,12 @@ const EditAStore = () => {
     name: store?.name,
     description: store?.description,
     type: store?.type,
-    store_img_url: store?.store_banner_url,
+    store_img_url: store?.store_img_url,
     store_banner_url: store?.store_banner_url,
   });
+
+  const [storeImgFile, setStoreImgFile] = useState(null);
+  const [storeBannerFile, setStoreBannerFile] = useState(null);
 
   useEffect(() => {
     setUpdatedStore({
@@ -36,13 +39,25 @@ const EditAStore = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(editAStore(updatedStore));
+    const formData = new FormData();
 
+    Object.keys(updatedStore).forEach(key => {
+      formData.append(key, updatedStore[key]);
+    });
+
+    if (storeImgFile) {
+      formData.append("store_img_url", storeImgFile);
+    }
+    if (storeBannerFile) {
+      formData.append("store_banner_url", storeBannerFile);
+    }
+
+    await dispatch(editAStore(formData));
     navigate(`/stores/${storeId}`);
   };
 
   return user ? (
-    <form action='POST' onSubmit={handleSubmit}>
+    <form action='POST' onSubmit={handleSubmit} encType="multipart/form-data">
       <h1>Create Your Store</h1>
 
       <div className='form-item'>
@@ -85,30 +100,21 @@ const EditAStore = () => {
       <div className='form-item'>
         <label>Profile Image</label>
         <input
-          value={updatedStore.store_img_url}
-          onChange={(e) =>
-            setUpdatedStore((prev) => ({
-              ...prev,
-              store_img_url: e.target.value,
-            }))
-          }
-          type='text'
+          type="file"
+          accept="image/*"
+          onChange={(e) => setStoreImgFile(e.target.files[0])}
         />
       </div>
 
       <div className='form-item'>
         <label>Banner Image</label>
         <input
-          value={updatedStore.store_banner_url}
-          onChange={(e) =>
-            setUpdatedStore((prev) => ({
-              ...prev,
-              store_banner_url: e.target.value,
-            }))
-          }
-          type='text'
+          type="file"
+          accept="image/*"
+          onChange={(e) => setStoreBannerFile(e.target.files[0])}
         />
       </div>
+
       <button className='primary-btn' type='submit'>
         Submit
       </button>

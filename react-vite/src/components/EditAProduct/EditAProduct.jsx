@@ -24,6 +24,8 @@ const EditAProduct = () => {
     stock_amount: product.stock_amount || 0,
   });
 
+  const [productImgFile, setProductImgFile] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,13 +40,13 @@ const EditAProduct = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("id", updatedProduct.id);
-    formData.append("store_id", updatedProduct.store_id);
-    formData.append("title", updatedProduct.title);
-    formData.append("description", updatedProduct.description);
-    formData.append("price", updatedProduct.price);
-    formData.append("product_img", updatedProduct.product_img);
-    formData.append("stock_amount", updatedProduct.stock_amount);
+    Object.keys(updatedProduct).forEach(key => {
+      formData.append(key, updatedProduct[key]);
+    });
+
+    if (productImgFile) {
+      formData.append("product_img", productImgFile);
+    }
 
     const addedProduct = await dispatch(editAProduct(formData));
 
@@ -54,7 +56,7 @@ const EditAProduct = () => {
   };
 
   return user ? (
-    <form action='POST' onSubmit={handleSubmit}>
+    <form action='POST' onSubmit={handleSubmit} encType="multipart/form-data">
       <h1>Update Your Product</h1>
 
       <div className='form-item'>
@@ -140,15 +142,9 @@ const EditAProduct = () => {
       <div className='form-item'>
         <label>Product Image</label>
         <input
-          value={updatedProduct.product_img.name}
-          onChange={(e) =>
-            setUpdatedProduct((prev) => ({
-              ...prev,
-              product_img: e.target.files[0],
-            }))
-          }
           type='file'
           accept='image/*'
+          onChange={(e) => setProductImgFile(e.target.files[0])}
         />
       </div>
       <button className='primary-btn' type='submit'>

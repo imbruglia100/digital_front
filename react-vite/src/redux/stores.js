@@ -149,10 +149,12 @@ export const deleteStoreReview = (reviewId) => async (dispatch) => {
   }
 };
 
-export const editAStore = (store) => async (dispatch) => {
-  const res = await fetch(`/api/stores/${+store?.id}`, {
+export const editAStore = (formData) => async (dispatch) => {
+  const storeId = formData.get('id');
+
+  const res = await fetch(`/api/stores/${storeId}`, {
     method: "PUT",
-    body: store,
+    body: formData,
   });
 
   if (res.ok) {
