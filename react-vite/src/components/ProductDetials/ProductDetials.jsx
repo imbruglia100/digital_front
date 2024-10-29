@@ -108,19 +108,8 @@ const ProductDetials = ({ edit }) => {
               </div>
             )}
         </div>
-        {reviews.length > 0
-          ? reviews.map((rev) => <ReviewCard review={rev} product={true} />)
-          : user &&
-            user.id !== product?.Store?.Owner.id &&
-            reviews.filter((ele) => ele.User.id === user.id).length === 0 && (
-              <div className='center-container'>
-                <OpenModalMenuItem
-                  className='primary-btn create-review-btn'
-                  modalComponent={<CreateReview product_id={product.id} />}
-                  itemText='Create A Review'
-                />
-              </div>
-            )}
+        {reviews.length > 0 &&
+          reviews.map((rev) => <ReviewCard review={rev} product={true} />)}
       </div>
     </div>
   );
