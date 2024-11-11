@@ -91,7 +91,7 @@ function Navigation() {
           </>
         ) : (
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Cart className='navlink' />
+            <Cart />
             <DropdownMenu
               items={[
                 user.username,
