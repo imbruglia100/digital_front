@@ -49,10 +49,6 @@ z-index: 1;
   padding: 0;
 }
 
-.cart .cart-item #prod-title{
-
-}
-
 .cart .cart-item input {
     width: 20px;
     height: fit-content;
