@@ -19,5 +19,6 @@ class CartItem(db.Model):
             'id': self.id,
             'cart_id': self.cart_id,
             'product_id': self.product_id,
-            'quantity': self.quantity
+            'quantity': self.quantity,
+            'product': self.product.to_dict() if self.product else {}
         }
