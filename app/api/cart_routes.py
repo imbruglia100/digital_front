@@ -7,7 +7,7 @@ from app.models import db
 cart_routes = Blueprint('cart_routes', __name__)
 
 #returns cart for user
-@cart_routes.route('')
+@cart_routes.route('/current')
 def get_cart():
     cart = Cart.query.filter_by(user_id=current_user.id).first()
 
@@ -17,7 +17,7 @@ def get_cart():
         )
         db.session.add(new_cart)
         db.session.commit()
-        return jsonify(new_cart.to_dict(), 200)
+        return jsonify(new_cart.to_dict(), 201)
 
     return jsonify(cart.to_dict()), 200
 
@@ -62,14 +62,14 @@ def add_to_cart(product_id):
     return jsonify(item_to_add.to_dict() if not existing_item else existing_item.to_dict()), 201
 
 #remove from cart
-@cart_routes.route('/remove/<int:product_id>', methods=["DELETE"])
-def remove_from_cart(product_id):
+@cart_routes.route('/remove/<int:cart_item_id>', methods=["DELETE"])
+def remove_from_cart(cart_item_id):
     cart = Cart.query.filter_by(user_id=current_user.id).first()
 
     if not cart:
         return jsonify({"error": "Cart not found"}), 404
 
-    cart_item = CartItem.query.filter_by(cart_id=cart.id, product_id=product_id).first()
+    cart_item = CartItem.query.filter_by(cart_id=cart.id, id=cart_item_id).first()
 
     if not cart_item:
         return jsonify({"error": "Item not found in cart"}), 404

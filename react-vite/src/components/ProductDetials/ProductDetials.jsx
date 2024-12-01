@@ -12,6 +12,7 @@ import DeleteProductModal from "./DeleteProductModal";
 import { getSelectedProduct, clearSelected } from "../../redux/products";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import CreateReview from "../CreateReview/CreateReview";
+import AddToCart from '../AddToCart/AddToCart';
 
 const ProductDetials = ({ edit }) => {
   const { productId } = useParams();
@@ -20,6 +21,11 @@ const ProductDetials = ({ edit }) => {
   const [reviewAvg, setReviewAvg] = useState(0);
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
+
+  const handleQuantityChange = (e) => {
+    setSelectedQuantity(Number(e.target.value));
+  };
 
   useEffect(() => {
     dispatch(clearSelected());
@@ -67,17 +73,12 @@ const ProductDetials = ({ edit }) => {
           </div>
           <div>
             <h3>{product.description}</h3>
-            <select>
+            <select value={selectedQuantity} onChange={handleQuantityChange}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((el) => (
-                <option value={el}>{el}</option>
+                <option key={el} value={el}>{el}</option>
               ))}
             </select>
-            <button
-              className='primary-btn'
-              onClick={() => alert("Feature is under development.")}
-            >
-              Add to cart
-            </button>
+            <AddToCart productId={product.id} quantity={selectedQuantity} />
           </div>
         </div>
         {user && user?.id === product?.Store?.owner_id && (

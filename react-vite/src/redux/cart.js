@@ -29,43 +29,52 @@ export const getUserCart = () => async (dispatch) => {
 
   if (res.ok) {
     const data = await res.json();
-
     if (data.errors) {
       return { ...data.errors };
     }
 
-    dispatch(setCart({ ...data.cart }));
+    dispatch(setCart({ ...data.cart_items }));
   }
 };
 
-export const addNewStore = (product) => async (dispatch) => {
-  const res = await fetch("/api/carts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(product),
-  });
+export const addToCart =
+  (productId, quantity = 1) =>
+  async (dispatch) => {
+    try {
+      const res = await fetch(`/api/carts/add/${+productId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ quantity }),
+      });
 
-  if (res.ok) {
-    const data = await res.json();
+      if (res.ok) {
+        const data = await res.json();
 
-    if (data.errors) {
-      return { ...data.errors };
+        if (data.errors) {
+          return { ...data.errors };
+        }
+        await dispatch(addItem(data));
+        return data;
+      } else {
+        const errorData = await res.json();
+        return errorData;
+      }
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      return { errors: ["An error occurred while adding to cart"] };
     }
+  };
 
-    dispatch(addItem(data));
-    return data;
-  }
-};
-
-export const deleteAnItem = (productId) => async (dispatch) => {
-  const res = await fetch(`/api/carts/${+storeId}`, {
+export const deleteAnItem = (cartItemId) => async (dispatch) => {
+  const res = await fetch(`/api/carts/remove/${+cartItemId}`, {
     method: "DELETE",
   });
 
   if (res.ok) {
-    dispatch(removeItem(+productId));
+    dispatch(removeItem(+cartItemId));
+    await dispatch(getUserCart());
   }
 };
 
@@ -80,29 +89,26 @@ export const removeAllItemsFromCart = () => async (dispatch) => {
 };
 
 const initialState = {
-  cart: {
-    isLoading: true,
-  },
+  isLoading: true,
 };
 
 function cartsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_CART:
-      return { ...state, cart: { ...action.payload, isLoading: false } };
+      return { ...state, ...action.payload, isLoading: false };
     case ADD_ITEM:
       return {
         ...state,
-        cart: {
-          ...state.cart,
-          [action.payload.id]: action.payload,
-          isLoading: false,
-        },
+        [action.payload.id]: action.payload,
+        isLoading: false,
       };
     case CLEAR_CART:
-      return { ...state, cart: { isLoading: false } };
-    case REMOVE_ITEM:
-      delete state.cart[action.payload];
-      return state;
+      return { ...state, isLoading: false };
+    case REMOVE_ITEM: {
+      const newState = { ...state };
+      delete newState[action.payload];
+      return newState;
+    }
     default:
       return state;
   }
