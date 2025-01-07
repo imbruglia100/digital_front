@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
         >
           <p className='store-thumbnail-text navlink'>{product?.Store?.name}</p>
         </NavLink>
-        <h3 style={{ margin: "4px" }}>{product?.title}</h3>
+        <h3 style={{ margin: "4px" }}>{product?.title && product?.title.slice(0, 16) + "..."}</h3>
       </div>
 
       <div className='product-info'>
@@ -32,7 +32,10 @@ const ProductCard = ({ product }) => {
             ${product.price}
           </p>
           {product?.description ? (
-            <p style={{ margin: "5px", textAlign: "center" }}>
+            <p
+              className='product-description'
+              style={{ margin: "5px", textAlign: "center" }}
+            >
               {product.description}
             </p>
           ) : (
@@ -43,7 +46,10 @@ const ProductCard = ({ product }) => {
               {product?.stock_amount} left in stock!
             </p>
           ) : (
-            <div></div>
+            <div>
+              {/* Need an outline for the product card  */}
+
+            </div>
           )}
         </div>
         <div className='first-half-product-info'>
@@ -57,7 +63,8 @@ const ProductCard = ({ product }) => {
                 style={{ color: "#A57C00", textDecoration: "none" }}
                 href='#reviews'
               >
-                {(reviewTotal/reviewLength).toFixed(1)} <FontAwesomeIcon icon={faStar} />
+                {(reviewTotal / reviewLength).toFixed(1)}{" "}
+                <FontAwesomeIcon icon={faStar} />
               </a>
             </>
           ) : (

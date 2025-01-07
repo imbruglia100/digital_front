@@ -62,10 +62,16 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: start;
+    width: fit-content;
 }
 
 .store-info .first-half-store-info *{
     margin: 0;
+}
+
+.store-info .first-half-store-info > h2{
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .store-info .second-half-store-info{

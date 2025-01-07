@@ -60,13 +60,14 @@ const Home = () => {
       </p>
       {storesArr.length !== 0 ? (
         <Carousel
-          swipeable={false}
-          draggable={false}
+          swipeable={true}
+          draggable={true}
           responsive={responsive}
           infinite={true}
-          centerMode={true}
+          centerMode={false}
           containerClass='carousel-container'
           dotListClass='custom-dot-list-style'
+          
           itemClass='carousel-item'
         >
           {storesArr.map((store) => (
@@ -89,7 +90,6 @@ const Home = () => {
           draggable={false}
           responsive={responsive}
           infinite={true}
-          centerMode={true}
           containerClass='carousel-container'
           dotListClass='custom-dot-list-style'
           itemClass='carousel-item'
