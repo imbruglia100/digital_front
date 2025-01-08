@@ -32,7 +32,7 @@ def seed_stores():
     )
 
     garden_center = Store(
-        owner_id=1,
+        owner_id=4,
         name='Green Thumb Gardens',
         description='Everything for your garden - from rare plants to premium tools and expert advice.',
         type='Home & Garden',
@@ -41,7 +41,7 @@ def seed_stores():
     )
 
     gourmet_market = Store(
-        owner_id=2,
+        owner_id=1,
         name='The Pantry',
         description='Specialty foods, local delicacies, and imported gourmet ingredients for food enthusiasts.',
         type='Food & Beverage',
@@ -50,7 +50,7 @@ def seed_stores():
     )
 
     pet_boutique = Store(
-        owner_id=3,
+        owner_id=2,
         name='Pawsome Pets',
         description='Premium pet supplies, organic treats, and stylish accessories for your furry friends.',
         type='Pets',
@@ -69,7 +69,7 @@ def seed_stores():
 
     review2 = StoreReview(
         store_id=1,
-        user_id=4,
+        user_id=3,
         title="Beautiful Local Crafts",
         description="Love supporting local artists through this store. The quality is exceptional, though prices are a bit high.",
         rating=4
@@ -77,7 +77,7 @@ def seed_stores():
 
     review3 = StoreReview(
         store_id=1,
-        user_id=7,
+        user_id=4,
         title="Hidden Gem for Gifts",
         description="Perfect place to find unique gifts. The staff is knowledgeable about each artist's work.",
         rating=5
@@ -102,7 +102,7 @@ def seed_stores():
 
     review6 = StoreReview(
         store_id=2,
-        user_id=8,
+        user_id=4,
         title="Nostalgic Treasures",
         description="Found some amazing pieces from the 60s. The owner really knows their vintage items.",
         rating=5
@@ -119,7 +119,7 @@ def seed_stores():
 
     review8 = StoreReview(
         store_id=3,
-        user_id=5,
+        user_id=1,
         title="Great Custom Builds",
         description="Had my gaming PC built here. Excellent service and competitive prices on components.",
         rating=5
@@ -127,7 +127,7 @@ def seed_stores():
 
     review9 = StoreReview(
         store_id=3,
-        user_id=6,
+        user_id=4,
         title="Reliable Tech Support",
         description="Always my go-to for tech issues. They're honest about repairs and don't oversell.",
         rating=4
@@ -136,7 +136,7 @@ def seed_stores():
     # Reviews for Green Thumb Gardens (store_id=4)
     review10 = StoreReview(
         store_id=4,
-        user_id=4,
+        user_id=1,
         title="Plant Lover's Dream",
         description="Amazing selection of rare plants and the staff really knows their plant care!",
         rating=5
@@ -144,7 +144,7 @@ def seed_stores():
 
     review11 = StoreReview(
         store_id=4,
-        user_id=7,
+        user_id=2,
         title="Expert Garden Advice",
         description="The team here helped me completely transform my garden. Great selection of tools and plants.",
         rating=5
@@ -152,7 +152,7 @@ def seed_stores():
 
     review12 = StoreReview(
         store_id=4,
-        user_id=1,
+        user_id=3,
         title="Quality Garden Supplies",
         description="High-quality tools and plants. Staff is always willing to share gardening tips.",
         rating=4
@@ -161,7 +161,7 @@ def seed_stores():
     # Reviews for The Pantry (store_id=5)
     review13 = StoreReview(
         store_id=5,
-        user_id=5,
+        user_id=2,
         title="Foodie Heaven",
         description="The selection of imported cheeses and specialty ingredients is outstanding!",
         rating=5
@@ -169,7 +169,7 @@ def seed_stores():
 
     review14 = StoreReview(
         store_id=5,
-        user_id=8,
+        user_id=3,
         title="Gourmet Paradise",
         description="Love their curated selection of local and imported goods. Great for gift baskets!",
         rating=5
@@ -177,7 +177,7 @@ def seed_stores():
 
     review15 = StoreReview(
         store_id=5,
-        user_id=3,
+        user_id=4,
         title="Amazing Selection",
         description="Best place for hard-to-find ingredients. The olive oil tasting station is fantastic!",
         rating=4
@@ -186,7 +186,7 @@ def seed_stores():
     # Reviews for Pawsome Pets (store_id=6)
     review16 = StoreReview(
         store_id=6,
-        user_id=6,
+        user_id=1,
         title="Best Pet Store Ever",
         description="High-quality products and the staff clearly loves animals. Great advice on pet care!",
         rating=5
@@ -194,7 +194,7 @@ def seed_stores():
 
     review17 = StoreReview(
         store_id=6,
-        user_id=2,
+        user_id=3,
         title="Quality Pet Supplies",
         description="Love their selection of natural pet foods and eco-friendly toys.",
         rating=4
@@ -202,7 +202,7 @@ def seed_stores():
 
     review18 = StoreReview(
         store_id=6,
-        user_id=8,
+        user_id=4,
         title="Pet Paradise",
         description="My dogs love their treats from here! Staff is super knowledgeable about pet nutrition.",
         rating=5
