@@ -83,13 +83,23 @@
     text-decoration: none;
     max-width: 30px;
 }
+.product-img-container > h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
 
 .product-store-container .store-thumbnail-text {
     margin: 2px 4px;
     width: fit-content;
     color: var(--neutral-color);
+    font-size: 13px;
 }
 
 .first-half-product-info > * {
     margin: 0 3px;
+}
+
+.second-half-product-info > .product-description {
+    font-size: 14px;
+    
 }

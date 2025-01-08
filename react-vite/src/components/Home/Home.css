@@ -19,11 +19,11 @@
     margin: 10px auto;
 }
 
+
 .carousel-item {
-    transition: all 1s ease;
-    min-width: 22vw;
-    margin: 10px;
+    width: 400px;
 }
+
 
 .carousel-item .store-card-container, .carousel-item .product-card-container {
     width: auto;
