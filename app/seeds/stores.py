@@ -4,124 +4,216 @@ from sqlalchemy.sql import text
 
 # Adds a demo user, you can add other users here if you want
 def seed_stores():
-
-    demos_store = Store(
+    artisan_crafts = Store(
         owner_id=1,
-        name='Demo Store',
-        description='If your looking for a store to test out, this is just the place!',
-        type = 'Demo Category',
-        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
-        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+        name='Artisan Corner',
+        description='Handcrafted pottery, textiles, and unique artisanal pieces from local creators.',
+        type='Arts & Crafts',
+        store_img_url='https://images.unsplash.com/photo-1493106641515-6b5631de4bb9',
+        store_banner_url='https://images.unsplash.com/photo-1461887046916-c7426e65460d'
     )
 
-    bills_store = Store(
+    vintage_finds = Store(
         owner_id=2,
-        name='Bills Store',
-        description='I am Bill and this is my store! I sell lots of goods',
-        type = 'Demo Category',
-        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
-        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+        name='Vintage Vault',
+        description='Curated collection of vintage clothing, accessories, and rare collectibles from the 50s to 90s.',
+        type='Vintage & Antiques',
+        store_img_url='https://images.unsplash.com/photo-1445966275305-9806327ea2b5',
+        store_banner_url='https://images.unsplash.com/photo-1459908676235-d5f02a50184b'
     )
 
-    johns_store = Store(
+    tech_hub = Store(
         owner_id=3,
-        name='Johns Store',
-        description='If your looking for a store to test out, this is just the place!',
-        type = 'Demo Category',
-        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
-        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+        name='Tech Haven',
+        description='Latest gadgets, custom PC builds, and expert tech repair services all under one roof.',
+        type='Electronics',
+        store_img_url='https://images.unsplash.com/photo-1591405351990-4726e331f141',
+        store_banner_url='https://images.unsplash.com/photo-1518770660439-4636190af475'
     )
 
-    demos_store2 = Store(
+    garden_center = Store(
         owner_id=1,
-        name='Longs Jewlers',
-        description='We have all the jewlery.',
-        type = 'Jewlery',
-        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
-        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+        name='Green Thumb Gardens',
+        description='Everything for your garden - from rare plants to premium tools and expert advice.',
+        type='Home & Garden',
+        store_img_url='https://images.unsplash.com/photo-1463936575829-25148e1db1b8',
+        store_banner_url='https://images.unsplash.com/photo-1585320806297-9794b3e4eeae'
     )
 
-    bills_store2 = Store(
+    gourmet_market = Store(
         owner_id=2,
-        name='Home Depot',
-        description='We have all the tools you need to finish that project.',
-        type = 'Home and Garden',
-        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
-        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+        name='The Pantry',
+        description='Specialty foods, local delicacies, and imported gourmet ingredients for food enthusiasts.',
+        type='Food & Beverage',
+        store_img_url='https://images.unsplash.com/photo-1509440159596-0249088772ff',
+        store_banner_url='https://images.unsplash.com/photo-1482275548304-a58859dc31b7'
     )
 
-    johns_store2 = Store(
+    pet_boutique = Store(
         owner_id=3,
-        name='Best Buy',
-        description='We have all your tech needs',
-        type = 'Technology',
-        store_img_url='https://mydigitalwirral.co.uk/wp-content/uploads/2020/02/bigstock-Empty-Store-Front-With-Window-324188686.jpg',
-        store_banner_url='https://www.pngmart.com/files/13/Vector-Pattern-PNG-Image-Background.png'
+        name='Pawsome Pets',
+        description='Premium pet supplies, organic treats, and stylish accessories for your furry friends.',
+        type='Pets',
+        store_img_url='https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba',
+        store_banner_url='https://images.unsplash.com/photo-1450778869180-41d0601e046e'
     )
 
-    demo_review_1 = StoreReview(
-    store_id=1,
-    user_id=3,
-    title="Great Place to Explore!",
-    description="I love coming to Demo Store. It's a fantastic place to see a variety of items and test them out. The staff is super friendly and helpful!",
-    rating=4
-    )
-
-    demo_review_2 = StoreReview(
+    # Reviews for Artisan Corner (store_id=1)
+    review1 = StoreReview(
         store_id=1,
         user_id=2,
-        title="Excellent Experience",
-        description="I had a wonderful time shopping at Demo Store. The products are unique and well-presented. Will definitely return!",
+        title="Exceptional Handcrafted Items",
+        description="Every piece in this store tells a story. The pottery collection is outstanding, and the artisans clearly take pride in their work.",
         rating=5
     )
 
-    bills_review_1 = StoreReview(
-    store_id=2,
-    user_id=1,
-    title="Bill's Got It All!",
-    description="I can always find what I need at Bill's Store. From groceries to household items, they have a great selection!",
-    rating=5
-    )
-
-    bills_review_2 = StoreReview(
-        store_id=2,
-        user_id=3,
-        title="Friendly Service",
-        description="Every time I visit, the staff is so welcoming and eager to help. Bill's Store feels like home!",
+    review2 = StoreReview(
+        store_id=1,
+        user_id=4,
+        title="Beautiful Local Crafts",
+        description="Love supporting local artists through this store. The quality is exceptional, though prices are a bit high.",
         rating=4
     )
 
-    johns_review_1 = StoreReview(
-    store_id=3,
-    user_id=1,
-    title="Love This Store!",
-    description="John's Store is my go-to for everything. The selection is fantastic, and I always leave satisfied!",
-    rating=5
+    review3 = StoreReview(
+        store_id=1,
+        user_id=7,
+        title="Hidden Gem for Gifts",
+        description="Perfect place to find unique gifts. The staff is knowledgeable about each artist's work.",
+        rating=5
     )
 
-    johns_review_2 = StoreReview(
+    # Reviews for Vintage Vault (store_id=2)
+    review4 = StoreReview(
+        store_id=2,
+        user_id=1,
+        title="Time Machine Experience",
+        description="Walking in here is like stepping back in time. Amazing collection of authentic vintage pieces!",
+        rating=5
+    )
+
+    review5 = StoreReview(
+        store_id=2,
+        user_id=3,
+        title="Vintage Fashion Paradise",
+        description="Incredible selection of vintage clothing. Everything is in great condition and reasonably priced.",
+        rating=4
+    )
+
+    review6 = StoreReview(
+        store_id=2,
+        user_id=8,
+        title="Nostalgic Treasures",
+        description="Found some amazing pieces from the 60s. The owner really knows their vintage items.",
+        rating=5
+    )
+
+    # Reviews for Tech Haven (store_id=3)
+    review7 = StoreReview(
         store_id=3,
         user_id=2,
-        title="Well Organized",
-        description="This store is very well organized. I can easily find what I'm looking for, and the staff is always on hand to assist.",
+        title="Tech Expert's Paradise",
+        description="Best tech repair service in town. Staff really knows their stuff and prices are fair.",
+        rating=5
+    )
+
+    review8 = StoreReview(
+        store_id=3,
+        user_id=5,
+        title="Great Custom Builds",
+        description="Had my gaming PC built here. Excellent service and competitive prices on components.",
+        rating=5
+    )
+
+    review9 = StoreReview(
+        store_id=3,
+        user_id=6,
+        title="Reliable Tech Support",
+        description="Always my go-to for tech issues. They're honest about repairs and don't oversell.",
+        rating=4
+    )
+
+    # Reviews for Green Thumb Gardens (store_id=4)
+    review10 = StoreReview(
+        store_id=4,
+        user_id=4,
+        title="Plant Lover's Dream",
+        description="Amazing selection of rare plants and the staff really knows their plant care!",
+        rating=5
+    )
+
+    review11 = StoreReview(
+        store_id=4,
+        user_id=7,
+        title="Expert Garden Advice",
+        description="The team here helped me completely transform my garden. Great selection of tools and plants.",
+        rating=5
+    )
+
+    review12 = StoreReview(
+        store_id=4,
+        user_id=1,
+        title="Quality Garden Supplies",
+        description="High-quality tools and plants. Staff is always willing to share gardening tips.",
+        rating=4
+    )
+
+    # Reviews for The Pantry (store_id=5)
+    review13 = StoreReview(
+        store_id=5,
+        user_id=5,
+        title="Foodie Heaven",
+        description="The selection of imported cheeses and specialty ingredients is outstanding!",
+        rating=5
+    )
+
+    review14 = StoreReview(
+        store_id=5,
+        user_id=8,
+        title="Gourmet Paradise",
+        description="Love their curated selection of local and imported goods. Great for gift baskets!",
+        rating=5
+    )
+
+    review15 = StoreReview(
+        store_id=5,
+        user_id=3,
+        title="Amazing Selection",
+        description="Best place for hard-to-find ingredients. The olive oil tasting station is fantastic!",
+        rating=4
+    )
+
+    # Reviews for Pawsome Pets (store_id=6)
+    review16 = StoreReview(
+        store_id=6,
+        user_id=6,
+        title="Best Pet Store Ever",
+        description="High-quality products and the staff clearly loves animals. Great advice on pet care!",
+        rating=5
+    )
+
+    review17 = StoreReview(
+        store_id=6,
+        user_id=2,
+        title="Quality Pet Supplies",
+        description="Love their selection of natural pet foods and eco-friendly toys.",
+        rating=4
+    )
+
+    review18 = StoreReview(
+        store_id=6,
+        user_id=8,
+        title="Pet Paradise",
+        description="My dogs love their treats from here! Staff is super knowledgeable about pet nutrition.",
         rating=5
     )
 
     db.session.add_all([
-        demos_store,
-        bills_store,
-        johns_store,
-        demos_store2,
-        bills_store2,
-        johns_store2,
-        demo_review_1,
-        demo_review_2,
-        bills_review_1,
-        bills_review_2,
-        johns_review_1,
-        johns_review_2
-        ])
-
+        artisan_crafts, vintage_finds, tech_hub, garden_center, gourmet_market, pet_boutique,
+        review1, review2, review3, review4, review5, review6,
+        review7, review8, review9, review10, review11, review12,
+        review13, review14, review15, review16, review17, review18
+    ])
 
     db.session.commit()
 
