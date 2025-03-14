@@ -40,7 +40,7 @@ const AddToCart = ({ productId, quantity = 1 }) => {
         <div className="add-to-cart-wrapper">
             <button
                 onClick={handleAddToCart}
-                disabled={isLoading}
+                disabled={isLoading }
                 className={`add-to-cart-btn ${success ? 'success' : ''} ${error ? 'error' : ''}`}
             >
                 <FontAwesomeIcon icon={faCartPlus} />

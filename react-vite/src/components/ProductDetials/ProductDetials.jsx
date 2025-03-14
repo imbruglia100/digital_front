@@ -13,6 +13,7 @@ import { getSelectedProduct, clearSelected } from "../../redux/products";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import CreateReview from "../CreateReview/CreateReview";
 import AddToCart from '../AddToCart/AddToCart';
+import Markdown from "react-markdown";
 
 const ProductDetials = ({ edit }) => {
   const { productId } = useParams();
@@ -78,7 +79,9 @@ const ProductDetials = ({ edit }) => {
                 <option key={el} value={el}>{el}</option>
               ))}
             </select>
-            <AddToCart productId={product.id} quantity={selectedQuantity} />
+            <div className="add-to-cart-container">
+              <AddToCart productId={product.id} quantity={selectedQuantity} />
+            </div>
           </div>
         </div>
         {user && user?.id === product?.Store?.owner_id && (
@@ -94,9 +97,15 @@ const ProductDetials = ({ edit }) => {
           </div>
         )}
       </div>
+
+      <div className="product-markdown-description">
+        <Markdown
+          children={product?.markdown}
+        />
+      </div>
       <div className='reviews-container'>
         <div className='reviews-header'>
-          <h1>Reviews</h1>
+          <h2>Reviews</h2>
           {user &&
             user.id !== product?.Store?.Owner.id &&
             reviews.filter((ele) => ele.User.id === user.id).length === 0 && (

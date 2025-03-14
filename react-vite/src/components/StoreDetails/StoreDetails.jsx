@@ -14,8 +14,6 @@ import ProductList from "../ProductList/ProductList";
 import { getProductsByStoreId } from "../../redux/products";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import CreateReview from "../CreateReview/CreateReview";
-import {marked} from "marked";
-
 const StoreDetails = ({ edit }) => {
   const { storeId } = useParams();
   const store = useSelector((state) => state.stores.selectedStore);
