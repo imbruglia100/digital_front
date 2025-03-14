@@ -90,7 +90,7 @@ const StoreDetails = ({ edit }) => {
             </div>
           </div>
         </div>
-        <div id='store-description'>{store.description}</div>
+          <div id='store-description'>{store.description}</div>
       </div>
       <div className='tabs-container'>
         <p className={tabFocus === 'products' ? 'active' : ''} onClick={() => setTabFocus("products")}>Products</p>•
