@@ -10,6 +10,7 @@ class Product(db.Model):
     store_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('stores.id')), nullable=False,)
     title = db.Column(db.String(40), nullable=False, unique=True)
     description = db.Column(db.String(255))
+    markdown = db.Column(db.String(255))
     price = db.Column(db.Numeric(10, 2), nullable=False)
     stock_amount = db.Column(db.String(255))
     product_img = db.Column(db.String(255))
@@ -25,6 +26,7 @@ class Product(db.Model):
             'store_id': self.store_id,
             'title': self.title,
             'description': self.description,
+            'markdown': self.markdown,
             'price': self.price,
             'stock_amount': self.stock_amount,
             'product_img': self.product_img,
